@@ -1,0 +1,7 @@
+{
+  "bytes": 17881,
+  "http_status": 200,
+  "retrieved_at": "2026-11-11T23:35:41Z",
+  "sha256": "33fae406051a658c316580f8e8b5e461157e6663bc03b35648cc7cd3e89ee26b",
+  "source_url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=TB3MS"
+}

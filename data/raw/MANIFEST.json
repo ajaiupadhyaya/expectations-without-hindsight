@@ -5,6 +5,36 @@
       "retrieved_at": "2026-11-11T23:31:56Z",
       "sha256": "efa8fd126bf18836b203f5ac8a5d9e1d6df37683ca9c92b9e88dff75bcb4d6c9",
       "source_url": "https://dvn-cloud-iqss.s3.amazonaws.com/10.7910/DVN/3Q6BHC/1867c3ee469-546a1501b561?response-content-disposition=attachment%3B%20filename%2A%3DUTF-8%27%27Replication.zip&response-content-type=application%2Fzip&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20261111T233153Z&X-Amz-SignedHeaders=host&X-Amz-Credential=AKIAZT3GWQ6FKBSH5I56%2F20261111%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Expires=3600&X-Amz-Signature=5142c75f3b46daab798d2d0732a953328c5d5f455504a0b5e1b767b7f5fc2559"
+    },
+    "fred/2026-11-11/TB3MS.csv": {
+      "bytes": 17881,
+      "retrieved_at": "2026-11-11T23:35:41Z",
+      "sha256": "33fae406051a658c316580f8e8b5e461157e6663bc03b35648cc7cd3e89ee26b",
+      "source_url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=TB3MS"
+    },
+    "rtdsm/2026-11-11/ROUTPUTQvQd.xlsx": {
+      "bytes": 244845,
+      "retrieved_at": "2026-11-11T23:35:41Z",
+      "sha256": "6a7971b31b7336551705465de8a0855826f3652abe112406f52b2c2ed0994c0c",
+      "source_url": "https://www.philadelphiafed.org/-/media/FRBP/Assets/Surveys-And-Data/real-time-data/data-files/xlsx/ROUTPUTQvQd.xlsx?sc_lang=en&hash=34FA1C6BF0007996E1885C8C32E3BEF9"
+    },
+    "spf/2026-11-11/Individual_RGDP.xlsx": {
+      "bytes": 686446,
+      "retrieved_at": "2026-11-11T23:35:38Z",
+      "sha256": "78ff68387e6624db44c237bcb33def697bead4394681adca60086a1f4acab27b",
+      "source_url": "https://www.philadelphiafed.org/-/media/FRBP/Assets/Surveys-And-Data/survey-of-professional-forecasters/data-files/files/Individual_RGDP.xlsx?sc_lang=en&hash=5D704094EC8A5F6A1E12D87808753982"
+    },
+    "spf/2026-11-11/spf-documentation.pdf": {
+      "bytes": 731389,
+      "retrieved_at": "2026-11-11T23:35:40Z",
+      "sha256": "45723c6d27c87a0bde209ea548dd06255206a54206cac8e13ab5de5db7284ca8",
+      "source_url": "https://www.philadelphiafed.org/-/media/FRBP/Assets/Surveys-And-Data/survey-of-professional-forecasters/spf-documentation.pdf?sc_lang=en&hash=8408A4F1BF351A3C268B40F6BC7B95AA"
+    },
+    "spf/2026-11-11/spf-release-dates.txt": {
+      "bytes": 8298,
+      "retrieved_at": "2026-11-11T23:35:39Z",
+      "sha256": "c5f4c4dc349068ba9dc1f421c68474be26d0fe613fff83f70aa41eed96696ee3",
+      "source_url": "https://www.philadelphiafed.org/-/media/FRBP/Assets/Surveys-And-Data/survey-of-professional-forecasters/spf-release-dates.txt?sc_lang=en&hash=CE16E2057464DBD7A139FFE6188B48EC"
     }
   }
 }
