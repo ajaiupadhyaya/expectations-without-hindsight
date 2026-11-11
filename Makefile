@@ -1,4 +1,4 @@
-.PHONY: install test lint manifest verify-raw all
+.PHONY: install test test-fast lint manifest verify-raw aklmt noise-mc all
 .DELETE_ON_ERROR:
 
 install:
@@ -6,6 +6,9 @@ install:
 
 test:
 	uv run pytest
+
+test-fast:
+	uv run pytest -m "not slow"
 
 lint:
 	uv run ruff check ewh tests
@@ -17,5 +20,11 @@ manifest:
 verify-raw:
 	uv run python -m ewh.provenance.manifest verify
 
+aklmt:
+	uv run python -m ewh.data.aklmt
+
+noise-mc:
+	uv run python -m ewh.sim.noise_mc
+
 # Grows phase by phase: data -> estimation -> tables/figures -> paper.
-all: verify-raw test
+all: verify-raw test aklmt noise-mc

@@ -27,3 +27,6 @@ paper/build/
 
 .DS_Store
 .env
+paper/figures/
+paper/tables/
+paper/generated/
