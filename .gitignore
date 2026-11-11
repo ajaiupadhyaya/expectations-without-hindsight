@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+
+# Raw payloads stay local (and in the deposit); their sidecars and the manifest are committed.
+data/raw/**
+!data/raw/**/
+!data/raw/**/*.sidecar.json
+!data/raw/MANIFEST.json
+data/generations/**
+!data/generations/**/
+!data/generations/MANIFEST.json
+!data/generations/ledger.jsonl
+data/interim/
+data/processed/
+
+# Paper build
+paper/build/
+*.aux
+*.log
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+
+.DS_Store
+.env
