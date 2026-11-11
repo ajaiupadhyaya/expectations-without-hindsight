@@ -59,3 +59,62 @@ refine them. After tag `pap-v1`, changes go to `docs/deviations.md` instead.
   the noise-free coefficient is exactly θ for any rho > 0 (`ewh/sim/planted.py`).
 - **Reason:** the planted-bias recovery test needs a known population coefficient; this
   family spans over- and underreaction with one parameter.
+
+## Decision 7: Arm B construction and inference rules — committed before any SPF regression (2026-11-11)
+Plan Task 2.0. Written after reading the BGMS and CG code (definitions only); no regression on
+SPF or model data has been run. These rules bind the SPF replication (Task 2.4) and Arm B.
+
+**Variables (14).** SPF series with real-time vintages: NGDP, RGDP, PGDP, RCONSUM, RNRESIN,
+RRESINV, RGF, RGSL, HOUSING, CPI, INDPROD, UNEMP; plus TB3M and TN10Y (never revised; FRED
+TB3MS and GS10 quarterly averages of monthly values). AAA dropped (Decision 3).
+RTDSM codes: NOUTPUT, ROUTPUT, P, RCON, RINVBF, RINVRESID, RGF, RGSL, HSTARTS, CPI (quarterly
+vintages from 1994Q3), IPT (monthly vintages; quarterly averages within each vintage), RUC.
+
+**Target (BGMS, horizon t+3).** Growth variables and CPI: x_{t+3}/x_{t−1} − 1 (four-quarter
+growth ending t+3; for CPI this equals BGMS's compounded current-quarter-through-t+3 rate).
+UNEMP and rates: level in quarter t+3.
+
+**Outcome (BGMS baseline "ql").** x_{t+3} and x_{t−1} both taken from the vintage dated t+4, the
+first vintage that contains x_{t+3}; levels from that vintage (rates from FRED). Growth is
+therefore never computed across two vintages, so NIPA rebasings cannot enter a ratio.
+
+**SPF forecasts and revisions (BGMS exactly, for the human benchmark).** Growth forecast at t:
+SPF level forecast for t+3 divided by the real-time value of x_{t−1} in vintage t, minus 1
+(INDPROD: divided by the SPF's own t−1 column, as BGMS). Revision: that forecast minus the
+t−1 survey's forecast of t+3 over its own nowcast of t−1. Levels: forecast for t+3 minus the
+t−1 survey's forecast for the same quarter. CPI: compounded annualized quarterly rates.
+Trimming: drop forecasts more than 5 interquartile ranges from the cross-sectional median,
+per quarter and horizon. Individual regressions keep forecasters with at least 10 pairs.
+Consensus = mean of individual errors and revisions by quarter.
+
+**Model forecasts.** The prompt at survey quarter s shows the last 40 quarters of the
+transformed series (four-quarter growth in percent, or the level) computed inside the RTDSM
+vintage dated s, which contains data through s−1; rates show quarterly averages through s−1.
+One decimal. The date-t prompt asks for the target (4 steps after the last shown value); the
+date-(t−1) prompt asks for the same target (5 steps after). Revision = F_t − F_{t−1} in the
+same units as the target, so model and SPF revisions measure the same quantity.
+
+**Sample.** Forecast quarters t = 2000Q2 … 2025Q4 (the last t whose vintage t+4 is in the
+2026-11-11 RTDSM snapshot, which ends at vintage 2026Q4). Primary vintage rule: both
+forecasts of a pair use the ChronoGPT vintage with cutoff 31 December of year(t−1) − 1;
+robustness: latest valid vintage for each forecast. Contaminated pairs for H5: target first
+released on or before 2024-12-31. COVID (proposed, AJ confirms in the PAP): primary drops
+pairs whose target quarter t+3 lies in 2020Q1–2021Q2; the full sample is a robustness row.
+
+**Scaling for pooling.** Each variable's errors and revisions are divided by the standard
+deviation of its outcome over target quarters 1985Q1–1999Q4, computed from the vintage dated
+2000Q1 (pre-sample information only).
+
+**Inference.** Per variable: Newey–West (Bartlett). For the replication check, BGMS's own choices
+are matched (consensus: Bartlett with automatic bandwidth; individuals: two-way clustered by
+forecaster and quarter); the replication tolerance applies to coefficients. For Arm B, the
+pooled method is chosen by size simulation in Phase 3 between Driscoll–Kraay with fixed-b
+critical values and block-t (plan D12).
+
+**Replication tolerance (plan Task 2.4, fixed now).** Reference values: (i) BGMS Table 3 as
+computed from their own processed panel (`spf_out_trim5.dta`, BGMS package) and (ii) the
+Aug 2019 revision's Table 3 (`docs/references_verified.md`). Pass if, for NGDP, RGDP, PGDP, CPI,
+UNEMP, TB3M and TN10Y on BGMS's sample (1968Q4–2016Q4), each consensus coefficient from our
+pipeline (raw SPF and RTDSM files, 2026-11-11 snapshot) is within 0.15 of reference (i), with
+the same sign as reference (i) for at least 6 of 7; and the CG inflation coefficient (PGDP
+consensus, CG's sample 1969Q1–2014Q4) lies in [1.0, 1.5].
