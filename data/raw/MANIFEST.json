@@ -1,0 +1,10 @@
+{
+  "files": {
+    "aklmt/Replication.zip": {
+      "bytes": 114871529,
+      "retrieved_at": "2026-11-11T23:31:56Z",
+      "sha256": "efa8fd126bf18836b203f5ac8a5d9e1d6df37683ca9c92b9e88dff75bcb4d6c9",
+      "source_url": "https://dvn-cloud-iqss.s3.amazonaws.com/10.7910/DVN/3Q6BHC/1867c3ee469-546a1501b561?response-content-disposition=attachment%3B%20filename%2A%3DUTF-8%27%27Replication.zip&response-content-type=application%2Fzip&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20261111T233153Z&X-Amz-SignedHeaders=host&X-Amz-Credential=AKIAZT3GWQ6FKBSH5I56%2F20261111%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Expires=3600&X-Amz-Signature=5142c75f3b46daab798d2d0732a953328c5d5f455504a0b5e1b767b7f5fc2559"
+    }
+  }
+}
