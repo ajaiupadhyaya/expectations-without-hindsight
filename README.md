@@ -10,7 +10,7 @@ error-on-revision regression (noise), or a weak model simply echoes the last num
 of the three, using vintage models with dated training cutoffs, repeated draws with a
 split-sample instrumental-variables estimator, and a pre-registered competence gate.
 
-**Status:** Phase 0 of 7 (novelty check, references, data access). Not yet pre-registered.
+**Status:** Phase 0 done (2026-11-11): C1 and C2 not published; AKLMT benchmark reproduced; all data public. Next: Phase 1 (simulator, estimators, noise result). Not yet pre-registered.
 
 | Document | What it is |
 |---|---|
