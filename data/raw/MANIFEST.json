@@ -18,11 +18,47 @@
       "sha256": "83a578042434ffd18a288bdb7a2aeb71858409b8353a693827807195af46b7a5",
       "source_url": "https://doi.org/10.3886/E112862V1"
     },
+    "fred/2026-11-11/GS10.csv": {
+      "bytes": 14222,
+      "retrieved_at": "2026-11-11T23:57:59Z",
+      "sha256": "018e609eb98c52ec8d2cf0ea9f8e1450c24974c31cca455cc19717a77703af78",
+      "source_url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=GS10"
+    },
     "fred/2026-11-11/TB3MS.csv": {
       "bytes": 17881,
       "retrieved_at": "2026-11-11T23:35:41Z",
       "sha256": "33fae406051a658c316580f8e8b5e461157e6663bc03b35648cc7cd3e89ee26b",
       "source_url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=TB3MS"
+    },
+    "rtdsm/2026-11-11/NOUTPUTQvQd.xlsx": {
+      "bytes": 244863,
+      "retrieved_at": "2026-11-11T23:57:42Z",
+      "sha256": "c0f3c99a6b149d5e23ce5536802b9c96cdc5db729d8f747d4ed5636bcf6932dd",
+      "source_url": "https://www.philadelphiafed.org/-/media/FRBP/Assets/Surveys-And-Data/real-time-data/data-files/xlsx/NOUTPUTQvQd.xlsx?sc_lang=en&hash=743C0789A7AA0E19F757021DDFF76963"
+    },
+    "rtdsm/2026-11-11/PQvQd.xlsx": {
+      "bytes": 247472,
+      "retrieved_at": "2026-11-11T23:57:45Z",
+      "sha256": "9726209d1cd370bd44bc22f18a1c715405e4e8f329d9779229ae8914203a11c6",
+      "source_url": "https://www.philadelphiafed.org/-/media/FRBP/Assets/Surveys-And-Data/real-time-data/data-files/xlsx/PQvQd.xlsx?sc_lang=en&hash=FC4C41BE96FDB3474C4A94C9DDFE9A2E"
+    },
+    "rtdsm/2026-11-11/RCONQvQd.xlsx": {
+      "bytes": 243915,
+      "retrieved_at": "2026-11-11T23:57:46Z",
+      "sha256": "584118fbc989768717ed615dc77f82d60a4a411c33b501dbd3ace12f63d1b95f",
+      "source_url": "https://www.philadelphiafed.org/-/media/FRBP/Assets/Surveys-And-Data/real-time-data/data-files/xlsx/RCONQvQd.xlsx?sc_lang=en&hash=1D98BA5A2BAB6E977CD2E72927D37C7E"
+    },
+    "rtdsm/2026-11-11/RGFQvQd.xlsx": {
+      "bytes": 239885,
+      "retrieved_at": "2026-11-11T23:57:50Z",
+      "sha256": "700de0ceee0245ff59895fcafc3ae9daa34c8c2d09b2abac74a0d2dbc156517f",
+      "source_url": "https://www.philadelphiafed.org/-/media/FRBP/Assets/Surveys-And-Data/real-time-data/data-files/xlsx/RGFQvQd.xlsx?sc_lang=en&hash=DDC4C3949F82B0163C9DB506E0007845"
+    },
+    "rtdsm/2026-11-11/RGSLQvQd.xlsx": {
+      "bytes": 239365,
+      "retrieved_at": "2026-11-11T23:57:51Z",
+      "sha256": "f8d137e993950f1ba53f45458b56ff697047899091a4e092aeba7d870c5621b0",
+      "source_url": "https://www.philadelphiafed.org/-/media/FRBP/Assets/Surveys-And-Data/real-time-data/data-files/xlsx/RGSLQvQd.xlsx?sc_lang=en&hash=D12318ABBF20348C1806FD069117CE97"
     },
     "rtdsm/2026-11-11/ROUTPUTQvQd.xlsx": {
       "bytes": 244845,
@@ -30,11 +66,59 @@
       "sha256": "6a7971b31b7336551705465de8a0855826f3652abe112406f52b2c2ed0994c0c",
       "source_url": "https://www.philadelphiafed.org/-/media/FRBP/Assets/Surveys-And-Data/real-time-data/data-files/xlsx/ROUTPUTQvQd.xlsx?sc_lang=en&hash=34FA1C6BF0007996E1885C8C32E3BEF9"
     },
+    "rtdsm/2026-11-11/cpiQvMd.xlsx": {
+      "bytes": 599661,
+      "retrieved_at": "2026-11-11T23:57:54Z",
+      "sha256": "57d28f99b28ca9a37801fcdd5026fae9b859e58b0f3dc1e150a55c544598bc34",
+      "source_url": "https://www.philadelphiafed.org/-/media/FRBP/Assets/Surveys-And-Data/real-time-data/data-files/xlsx/cpiQvMd.xlsx?sc_lang=en&hash=9659566E92130D1A394C7FEDB6EC4115"
+    },
+    "rtdsm/2026-11-11/hstartsMvMd.xlsx": {
+      "bytes": 1762862,
+      "retrieved_at": "2026-11-11T23:57:57Z",
+      "sha256": "785bec11ed8f5aa99788df7bb70e0384593928d7f7de7b21e5097dc422562340",
+      "source_url": "https://www.philadelphiafed.org/-/media/FRBP/Assets/Surveys-And-Data/real-time-data/data-files/xlsx/hstartsMvMd.xlsx?sc_lang=en&hash=6C1FAF79B72762F58407ECA0F1AC9244"
+    },
+    "rtdsm/2026-11-11/hstarts_first_second_third.xlsx": {
+      "bytes": 29227,
+      "retrieved_at": "2026-11-11T23:57:58Z",
+      "sha256": "1d657f86620d6e8bb49c83137bc47704895082bce39439fbc287d3de94f8428d",
+      "source_url": "https://www.philadelphiafed.org/-/media/FRBP/Assets/Surveys-And-Data/real-time-data/data-files/xlsx/hstarts_first_second_third.xlsx?sc_lang=en&hash=8E21C713F0C1B83D15D85BB45139CF32"
+    },
+    "rtdsm/2026-11-11/iptMvMd.xlsx": {
+      "bytes": 2869628,
+      "retrieved_at": "2026-11-11T23:57:56Z",
+      "sha256": "dbace36b2b44618c7e89cf7e6dec7b568ed58df8b0156d03d64e3f6cb297edee",
+      "source_url": "https://www.philadelphiafed.org/-/media/FRBP/Assets/Surveys-And-Data/real-time-data/data-files/xlsx/iptMvMd.xlsx?sc_lang=en&hash=71A0CD9AD2C8828F0B041196CBFB7E5E"
+    },
+    "rtdsm/2026-11-11/rinvbfQvQd.xlsx": {
+      "bytes": 241837,
+      "retrieved_at": "2026-11-11T23:57:47Z",
+      "sha256": "411ebf19858f7b21571935a6a3667dc1254893bffc97150dc38c577dd553fbeb",
+      "source_url": "https://www.philadelphiafed.org/-/media/FRBP/Assets/Surveys-And-Data/real-time-data/data-files/xlsx/rinvbfQvQd.xlsx?sc_lang=en&hash=F643A6F2D49BB3F6A983B5CE6F35A192"
+    },
+    "rtdsm/2026-11-11/rinvresidQvQd.xlsx": {
+      "bytes": 240530,
+      "retrieved_at": "2026-11-11T23:57:49Z",
+      "sha256": "d42bf1f79a7acccbe94c1ac38ec1da34c0be4ac536bbd4943b0c165161322aba",
+      "source_url": "https://www.philadelphiafed.org/-/media/FRBP/Assets/Surveys-And-Data/real-time-data/data-files/xlsx/rinvresidQvQd.xlsx?sc_lang=en&hash=029717D59E9D9994C33C5098A3D5A64F"
+    },
+    "rtdsm/2026-11-11/rucQvMd.xlsx": {
+      "bytes": 575288,
+      "retrieved_at": "2026-11-11T23:57:53Z",
+      "sha256": "d971e59d3ed5f1322a46631743508fb1ad5eee39bfbe12425a641a277fdd9b9a",
+      "source_url": "https://www.philadelphiafed.org/-/media/FRBP/Assets/Surveys-And-Data/real-time-data/data-files/xlsx/rucQvMd.xlsx?sc_lang=en&hash=A96BC0C2253B04EAEB8C4DC42D4F5CBA"
+    },
     "spf/2026-11-11/Individual_RGDP.xlsx": {
       "bytes": 686446,
       "retrieved_at": "2026-11-11T23:35:38Z",
       "sha256": "78ff68387e6624db44c237bcb33def697bead4394681adca60086a1f4acab27b",
       "source_url": "https://www.philadelphiafed.org/-/media/FRBP/Assets/Surveys-And-Data/survey-of-professional-forecasters/data-files/files/Individual_RGDP.xlsx?sc_lang=en&hash=5D704094EC8A5F6A1E12D87808753982"
+    },
+    "spf/2026-11-11/SPFmicrodata.xlsx": {
+      "bytes": 24612638,
+      "retrieved_at": "2026-11-11T23:57:39Z",
+      "sha256": "d45af2eaebe11e8c7a0635d3f868d5d85897e5bc5cc3d8cb477c243b31faa076",
+      "source_url": "https://www.philadelphiafed.org/-/media/FRBP/Assets/Surveys-And-Data/survey-of-professional-forecasters/historical-data/SPFmicrodata.xlsx?sc_lang=en&hash=FC620719B822510E215BA3908F0E3681"
     },
     "spf/2026-11-11/spf-documentation.pdf": {
       "bytes": 731389,
