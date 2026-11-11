@@ -115,6 +115,32 @@ def write_raw(path: Path, content: bytes, *, url: str, status: int) -> dict:
     return sidecar
 
 
+def archive_manual(src: Path, dest: Path, *, source_url: str, note: str) -> dict:
+    """Copy a file someone downloaded by hand into the raw archive, with a sidecar that says
+    so. `retrieved_at` is the source file's modification time (UTC); the copy refuses to
+    overwrite like every raw write."""
+    content = src.read_bytes()
+    side_path = sidecar_path(dest)
+    if side_path.exists():
+        raise FileExistsError(side_path)
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    with open(dest, "xb") as f:
+        f.write(content)
+    mtime = datetime.fromtimestamp(src.stat().st_mtime, UTC)
+    sidecar = {
+        "source_url": source_url,
+        "retrieved_at": mtime.strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "http_status": None,
+        "retrieval": "manual",
+        "note": note,
+        "archived_at": datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "bytes": len(content),
+        "sha256": sha256_bytes(content),
+    }
+    side_path.write_text(json.dumps(sidecar, indent=2, sort_keys=True) + "\n")
+    return sidecar
+
+
 def read_sidecar(path: Path) -> dict:
     return json.loads(sidecar_path(path).read_text())
 

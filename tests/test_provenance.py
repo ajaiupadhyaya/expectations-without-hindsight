@@ -94,3 +94,18 @@ def test_manifest_is_canonical(tmp_path):
     manifest.build(tmp_path)
     assert (tmp_path / "MANIFEST.json").read_bytes() == first
     assert list(json.loads(first)["files"]) == ["a.bin", "b.bin"]
+
+
+def test_archive_manual_copies_with_manual_sidecar(tmp_path):
+    src = tmp_path / "dl" / "pkg.zip"
+    src.parent.mkdir()
+    src.write_bytes(b"zipdata")
+    dest = tmp_path / "raw" / "pkg" / "pkg.zip"
+    side = archive.archive_manual(src, dest, source_url="https://doi.org/x", note="by hand")
+    assert dest.read_bytes() == b"zipdata" and src.exists()
+    assert side["retrieval"] == "manual" and side["http_status"] is None
+    assert side["sha256"] == hashlib.sha256(b"zipdata").hexdigest()
+    with pytest.raises(FileExistsError):
+        archive.archive_manual(src, dest, source_url="https://doi.org/x", note="by hand")
+    m = manifest.build(tmp_path / "raw")
+    assert m["files"]["pkg/pkg.zip"]["source_url"] == "https://doi.org/x"
