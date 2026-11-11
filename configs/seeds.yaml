@@ -1,0 +1,11 @@
+# Master seeds, one per namespace. Namespaces never overlap: every random stream is derived
+# from (namespace seed, purpose tags) through numpy SeedSequence, so two namespaces cannot
+# share a draw. Bound to the tag pap-v1 (plan D17). Fixed 2026-11-11, before any model output.
+pilot: 110_011_026
+dryrun: 220_022_026
+power: 330_033_026
+gate: 440_044_026
+confirm: 550_055_026
+subsets: 660_066_026
+splits: 770_077_026
+tests: 990_099_026
