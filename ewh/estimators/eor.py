@@ -285,15 +285,23 @@ def by_cell(fn, d: Draws, cov: CovSpec, cells=None, **kw) -> dict:
 
 
 def pooled_equal_weight(by: dict, d: Draws, cov: CovSpec, cells=None, label="") -> Estimate:
-    """Equal-weight mean of per-cell estimates (plan D5), with a pooled influence function so
-    clusters shared across cells are handled."""
+    """Equal-weight mean of per-cell estimates (plan D5)."""
     cells = list(by) if cells is None else list(cells)
+    return pooled_weighted(by, d, cov, {c: 1.0 for c in cells}, label or "pooled_equal_weight")
+
+
+def pooled_weighted(by: dict, d: Draws, cov: CovSpec, weights: dict, label="") -> Estimate:
+    """Fixed-weight mean of per-cell estimates, sum_c w_c b_c with weights normalised to one,
+    and a pooled influence function so clusters shared across cells are handled."""
+    cells = list(weights)
+    w = np.array([weights[c] for c in cells], float)
+    w = w / w.sum()
     ests = [by[c] for c in cells]
     uid = np.concatenate([e.uid for e in ests])
     U = len(uid)
-    phi = np.concatenate([e.psi * U / (len(cells) * e.n_units) for e in ests])
+    phi = np.concatenate([e.psi * U * wc / e.n_units for e, wc in zip(ests, w, strict=True)])
     v, G = var_of_mean(phi, align(d, uid), cov)
-    b = float(np.mean([e.b for e in ests]))
+    b = float(np.dot(w, [e.b for e in ests]))
     se = math.sqrt(v)
     return Estimate(
         b=b,
@@ -304,5 +312,5 @@ def pooled_equal_weight(by: dict, d: Draws, cov: CovSpec, cells=None, label="") 
         n_clusters=G,
         psi=phi,
         uid=uid,
-        label=label or "pooled_equal_weight",
+        label=label or "pooled_weighted",
     )
