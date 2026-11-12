@@ -1,0 +1,161 @@
+# Generation config, bound to tag pap-v1 (plan D17).
+status: 'DRAFT until tag pap-v1: allocation fields are fixed after the GPU pilot (Task 3.8)'
+templates_sha256: 44d2e514d6971e2560242e27eeb5cf7faecba7494cec459a55be752c3bb38204
+vendored_chronogpt_instruct_sha256: 60af30736d94f8db2be3da7cea5ca045430d33b8aaf384fe953a496380bdb462
+sampling:
+  temperature: 1.0
+  top_k: null
+  top_p: null
+  max_new_tokens: 12
+  greedy_read: true
+  stop: first newline in decoded text, after stripping leading whitespace
+k_draws: null
+arm_a_paths_per_cell: null
+crossed_block_paths_per_cell: null
+gate_paths_per_cell: null
+shards: null
+models:
+  chrono-1999:
+    repo: manelalab/chrono-gpt-instruct-v1-19991231
+    revision: 297f9ba7262dc86e71084ba214f4ee05a891c638
+    role: confirmatory
+  chrono-2000:
+    repo: manelalab/chrono-gpt-instruct-v1-20001231
+    revision: 8c249ea8f7ce24bd9268864e2548fb71cb8772f5
+    role: confirmatory
+  chrono-2001:
+    repo: manelalab/chrono-gpt-instruct-v1-20011231
+    revision: 2af12459c6e60b00edd82b6c14d5fbe9fe0463c1
+    role: confirmatory
+  chrono-2002:
+    repo: manelalab/chrono-gpt-instruct-v1-20021231
+    revision: 777eadfdc8dd37c4cc5ec03e04d0375e60c2b93c
+    role: confirmatory
+  chrono-2003:
+    repo: manelalab/chrono-gpt-instruct-v1-20031231
+    revision: 564bf9e9984c461793b2a6926979accaf0970e7d
+    role: confirmatory
+  chrono-2004:
+    repo: manelalab/chrono-gpt-instruct-v1-20041231
+    revision: 19bff0527fcda270790103a200ce99b90c2877a8
+    role: confirmatory
+  chrono-2005:
+    repo: manelalab/chrono-gpt-instruct-v1-20051231
+    revision: 6fdc3f4f5c2868481d26cfd644a9eb62556b03fe
+    role: confirmatory
+  chrono-2006:
+    repo: manelalab/chrono-gpt-instruct-v1-20061231
+    revision: 208f9b790c9f2194ec93dea1bc2a326dd85157fe
+    role: confirmatory
+  chrono-2007:
+    repo: manelalab/chrono-gpt-instruct-v1-20071231
+    revision: d184f3be0b936613355498ca2b3bd7930114e7a6
+    role: confirmatory
+  chrono-2008:
+    repo: manelalab/chrono-gpt-instruct-v1-20081231
+    revision: d7bc47e91ad85f0271e461db78c9cc4544e60166
+    role: confirmatory
+  chrono-2009:
+    repo: manelalab/chrono-gpt-instruct-v1-20091231
+    revision: 3a8099285798ca68fa7248516f22f4c7dc716c29
+    role: confirmatory
+  chrono-2010:
+    repo: manelalab/chrono-gpt-instruct-v1-20101231
+    revision: 86d39adba13b3c2e0250c4e91fc0fafe4507614c
+    role: confirmatory
+  chrono-2011:
+    repo: manelalab/chrono-gpt-instruct-v1-20111231
+    revision: a60308731f1eac74a955ff3df48ac37f8826b6a9
+    role: confirmatory
+  chrono-2012:
+    repo: manelalab/chrono-gpt-instruct-v1-20121231
+    revision: 64bc127dd28d636d2002a809cba064eea9173dfd
+    role: confirmatory
+  chrono-2013:
+    repo: manelalab/chrono-gpt-instruct-v1-20131231
+    revision: f35f1596d860a797df1c592a5a70bf02a3a00884
+    role: confirmatory
+  chrono-2014:
+    repo: manelalab/chrono-gpt-instruct-v1-20141231
+    revision: e121db790ca77ebb082c025b2438717644ee1cfb
+    role: confirmatory
+  chrono-2015:
+    repo: manelalab/chrono-gpt-instruct-v1-20151231
+    revision: 5a7f3439fd5d782b3780c366160c43177e6f5eba
+    role: confirmatory
+  chrono-2016:
+    repo: manelalab/chrono-gpt-instruct-v1-20161231
+    revision: 5aec0aacc696f9526e12abe22a3fc96348dfca1d
+    role: confirmatory
+  chrono-2017:
+    repo: manelalab/chrono-gpt-instruct-v1-20171231
+    revision: 5f6b4ab1664bd5e658af44ad6b02183178b81b55
+    role: confirmatory
+  chrono-2018:
+    repo: manelalab/chrono-gpt-instruct-v1-20181231
+    revision: 331c03be137a1a80f1a371232d3d6a9636f6ad9a
+    role: confirmatory
+  chrono-2019:
+    repo: manelalab/chrono-gpt-instruct-v1-20191231
+    revision: 4dfb7817915d07d0ed99815877186f827ec3b88e
+    role: confirmatory
+  chrono-2020:
+    repo: manelalab/chrono-gpt-instruct-v1-20201231
+    revision: f8020c2c939645abbec9caf8a0cdd1d7806cb42a
+    role: confirmatory
+  chrono-2021:
+    repo: manelalab/chrono-gpt-instruct-v1-20211231
+    revision: 7f3c7d0dccea060d96dfb89391ef830655b8dbaf
+    role: confirmatory
+  chrono-2022:
+    repo: manelalab/chrono-gpt-instruct-v1-20221231
+    revision: f1b8c4eb806a9fe7c26b7e5d30cf003304ed9281
+    role: confirmatory
+  chrono-2023:
+    repo: manelalab/chrono-gpt-instruct-v1-20231231
+    revision: 2156f3ac9a36916773664266397682b951d43411
+    role: confirmatory
+  chrono-2024:
+    repo: manelalab/chrono-gpt-instruct-v1-20241231
+    revision: c162df20666475d125737e030943e18e10b3d91f
+    role: confirmatory
+  chrono-base-1999:
+    repo: manelalab/chrono-gpt-v1-19991231
+    revision: 45d6568340081add5c5b1444feb17a94b8f8199d
+    role: pilot (non-confirmatory)
+  gpt2:
+    repo: openai-community/gpt2
+    revision: 607a30d783dfa663caf39e06633721c8d4cfcd7e
+    role: CPU stand-in
+  Qwen2-0.5B-Instruct:
+    repo: Qwen/Qwen2-0.5B-Instruct
+    revision: c540970f9e29518b1d8f06ab8b24cba66ad77b6d
+    role: parsing stand-in
+  Qwen2.5-0.5B-Instruct:
+    repo: Qwen/Qwen2.5-0.5B-Instruct
+    revision: 7ae557604adf67be50417f59c2c2f167def9a775
+    role: ladder
+  Qwen2.5-1.5B-Instruct:
+    repo: Qwen/Qwen2.5-1.5B-Instruct
+    revision: 989aa7980e4cf806f80c7fef2b1adb7bc71aa306
+    role: ladder
+  Qwen2.5-3B-Instruct:
+    repo: Qwen/Qwen2.5-3B-Instruct
+    revision: aa8e72537993ba99e69dfaafa59ed015b17504d1
+    role: ladder
+  Qwen2.5-7B-Instruct:
+    repo: Qwen/Qwen2.5-7B-Instruct
+    revision: a09a35458c702b33eeacc393d103063234e8bc28
+    role: ladder
+  Qwen2.5-14B-Instruct:
+    repo: Qwen/Qwen2.5-14B-Instruct
+    revision: cf98f3b3bbb457ad9e2bb7baf9a0125b6b88caa8
+    role: ladder
+  Llama-3.2-1B-Instruct:
+    repo: meta-llama/Llama-3.2-1B-Instruct
+    revision: 9213176726f574b556790deb65791e0c5aa438b6
+    role: ladder (gated)
+  Llama-3.2-3B-Instruct:
+    repo: meta-llama/Llama-3.2-3B-Instruct
+    revision: 0cb88a4f764b7a12671c53f0838cd831a0843b95
+    role: ladder (gated)

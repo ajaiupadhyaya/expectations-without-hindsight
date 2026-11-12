@@ -1,0 +1,75 @@
+# Prompt templates (plan D7). Fixed before any ChronoGPT-family model generated anything; the
+# file's sha256 is recorded in configs/generation.yaml and the PAP. Template = paraphrase x format.
+# No template may be dropped or edited after outcomes are seen.
+#
+# Placeholders: {values} the formatted history; {target_desc} what to forecast (filled per format
+# and framing below); {series}, {first}, {last}, {target_q} for the named framing (Arm B only).
+version: 1
+
+# The answer stem appended after the model's response header ("prefill"), per format.
+formats:
+  comma:
+    values: "{v_1}, {v_2}, ..., {v_T}"   # documentation only; rendered by ewh.prompts.templates
+    prefill: ""
+  indexed:
+    values: "one line per value: '<label>: <value>'"
+    prefill: "{target_label}:"
+
+target_desc:
+  anonymous:
+    comma:
+      1: "the next value"
+      other: "the value {h} periods after the last one"
+    indexed: "the value in period {target_label}"
+  named:
+    comma: "the value for {target_q}"
+    indexed: "the value for {target_q}"
+
+paraphrases:
+  P1:
+    intro_anonymous: "Below is a sequence of numbers recorded at regular intervals."
+    intro_named: "Below are quarterly values of {series}, from {first} to {last}."
+    question: "What is your forecast of {target_desc}? Reply with a single number."
+  P2:
+    intro_anonymous: "The following numbers are successive observations of a quantity over time."
+    intro_named: "The following are quarterly observations of {series}, {first} through {last}."
+    question: "Predict {target_desc}. Give only the number."
+  P3:
+    intro_anonymous: "Here is a time series, oldest observation first."
+    intro_named: "Here is the quarterly history of {series}, oldest first, from {first} to {last}."
+    question: "What do you expect {target_desc} to be? Answer with one number."
+  P4:
+    intro_anonymous: "A variable was measured once per period. Its past values are:"
+    intro_named: "Each quarter, {series} was recorded. Its values from {first} to {last} are:"
+    question: "Please forecast {target_desc}. Respond with a single number and nothing else."
+  P5:
+    intro_anonymous: "Consider this sequence of past values, listed in time order."
+    intro_named: "Consider these quarterly values of {series}, listed in time order from {first} to {last}."
+    question: "Based on these values, what will {target_desc} be? Write just the number."
+  P6:
+    intro_anonymous: "These are the historical values of a series, from earliest to latest."
+    intro_named: "These are the historical quarterly values of {series}, from {first} (earliest) to {last} (latest)."
+    question: "Estimate {target_desc}. Your answer should be a single number."
+
+# Arm B named framing: series descriptions.
+series:
+  NGDP: "the percent change in U.S. nominal GDP from four quarters earlier"
+  RGDP: "the percent change in U.S. real GDP from four quarters earlier"
+  PGDP: "the percent change in the U.S. GDP price index from four quarters earlier"
+  RCONSUM: "the percent change in U.S. real personal consumption expenditures from four quarters earlier"
+  RNRESIN: "the percent change in U.S. real nonresidential fixed investment from four quarters earlier"
+  RRESINV: "the percent change in U.S. real residential fixed investment from four quarters earlier"
+  RGF: "the percent change in U.S. real federal government consumption and investment from four quarters earlier"
+  RGSL: "the percent change in U.S. real state and local government consumption and investment from four quarters earlier"
+  HOUSING: "the percent change in U.S. housing starts from four quarters earlier"
+  CPI: "the percent change in the U.S. consumer price index from four quarters earlier"
+  INDPROD: "the percent change in the U.S. industrial production index from four quarters earlier"
+  UNEMP: "the U.S. civilian unemployment rate, in percent"
+  TB3M: "the 3-month U.S. Treasury bill rate, in percent"
+  TN10Y: "the 10-year U.S. Treasury bond yield, in percent"
+
+# ChronoGPT-Instruct wrapper, copied exactly from extract_response() in
+# vendor/chronogpt/ChronoGPT_instruct.py (the two indented lines carry four leading spaces).
+chronogpt:
+  system_prompt: "You are ChronoGPT, a large language model trained by ManelaLab at WashU.\n    Below is an instruction that describes a task.\n    Write a response that appropriately completes the request."
+  wrapper: "\n\n### Instruction:\n{system_prompt}\n{input_text}\n\n### Input:\n### Response:\n"
