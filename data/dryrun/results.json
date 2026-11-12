@@ -1,0 +1,43 @@
+{
+  "planted": [
+    {
+      "theta": -0.3,
+      "split_iv": -0.2536217001154274,
+      "split_iv_se": 0.04681869784421942,
+      "naive": -0.4117451429583771,
+      "naive_se": 0.009839890691387132,
+      "naive_predicted": -0.4252174690472346,
+      "h1": -0.1581234428429497,
+      "h1_se": 0.041263320921228065,
+      "h2_ls": -0.3687801545776488,
+      "h3": 0.03836174057732449,
+      "noise_share": 0.07396326673761738,
+      "recovered": 1.0
+    },
+    {
+      "theta": 0.3,
+      "split_iv": 0.34633716069613707,
+      "split_iv_se": 0.1423441089079992,
+      "naive": -0.3558556576377336,
+      "naive_se": 0.01042874280557844,
+      "naive_predicted": -0.36336709692031005,
+      "h1": -0.7021928183338706,
+      "h1_se": 0.13830925722567491,
+      "h2_ls": 0.2311787062339157,
+      "h3": -0.00883390260549375,
+      "noise_share": 0.07848233972751403,
+      "recovered": 1.0
+    }
+  ],
+  "gpt2": {
+    "gate_pass": false,
+    "parse_rate": 0.4880952380952381,
+    "examples": [
+      "\nNon perennial timers.\n\nInternet-owned... project",
+      "\nName, Year year, Past, Present\n\nYour",
+      "\n50-G=200, 80-G=0",
+      "\nClick Round to right city. Count Count of votes.",
+      "\nYou have indicated the subject of the response as long as"
+    ]
+  }
+}

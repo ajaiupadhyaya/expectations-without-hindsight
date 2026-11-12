@@ -1,4 +1,4 @@
-.PHONY: install test test-fast lint manifest verify-raw aklmt noise-mc spf-replication all
+.PHONY: install test test-fast lint manifest verify-raw aklmt noise-mc spf-replication tokenization dryrun all
 .DELETE_ON_ERROR:
 
 install:
@@ -25,6 +25,13 @@ aklmt:
 
 noise-mc:
 	uv run python -m ewh.sim.noise_mc
+
+tokenization:
+	uv run python -m ewh.prompts.tokenization
+
+dryrun:
+	uv run python -m ewh.dryrun
+	cd paper && latexmk -pdf -interaction=nonstopmode -outdir=build dryrun.tex >/dev/null
 
 spf-replication:
 	uv run python -m ewh.data.spf_replication
