@@ -71,15 +71,22 @@ def _obs_index(dates: pd.Series) -> pd.PeriodIndex:
     return pd.PeriodIndex(s, freq="M")
 
 
-def _monthly_to_quarterly(df: pd.DataFrame) -> pd.DataFrame:
-    """Quarterly means of monthly rows; NaN unless all three months are present."""
+def _monthly_to_quarterly(df: pd.DataFrame, agg: str = "mean") -> pd.DataFrame:
+    """Quarterly means of monthly rows (NaN unless all three months are present), or the last
+    month of each quarter (`agg="last"`, BGMS's INDPROD convention)."""
     q = df.index.asfreq("Q")
+    if agg == "last":
+        last = df[df.index.month % 3 == 0]
+        last.index = last.index.asfreq("Q")
+        return last
     g = df.groupby(q)
     return g.mean().where(g.count() == 3)
 
 
 @cache
-def vintage_matrix(var: str, month_in_quarter: int = MONTH_IN_QUARTER, root: Path = RAW_ROOT):
+def vintage_matrix(
+    var: str, month_in_quarter: int = MONTH_IN_QUARTER, obs_agg: str = "mean", root: Path = RAW_ROOT
+):
     """Observation quarter x vintage quarter matrix for an RTDSM variable."""
     stem, layout = RTDSM[var]
     path = root / "rtdsm" / SNAPSHOT / f"{stem}.xlsx"
@@ -98,7 +105,7 @@ def vintage_matrix(var: str, month_in_quarter: int = MONTH_IN_QUARTER, root: Pat
     else:
         raw = raw.rename(columns=vint)
     if layout in ("QM", "MM"):
-        raw = _monthly_to_quarterly(raw)
+        raw = _monthly_to_quarterly(raw, obs_agg)
     raw.columns = pd.PeriodIndex(raw.columns, freq="Q")
     return raw.sort_index().sort_index(axis=1)
 
@@ -124,14 +131,29 @@ def first_available_vintage(m: pd.DataFrame, s: pd.Period) -> pd.Period:
     raise KeyError(f"no vintage at or after {s}")
 
 
+LATE_RELEASE_LIMIT = 2  # quarters a vintage may be followed forward for a delayed observation
+
+
 def value(var: str, obs: pd.Period, vintage: pd.Period, **kw) -> float:
-    """x_obs as published in `vintage` (rates: never revised, known if obs < vintage)."""
+    """x_obs as published in `vintage` (rates: never revised, known if obs < vintage).
+
+    If the latest observation a vintage should hold (obs = vintage - 1) is missing because its
+    release was delayed (the 1996Q1 vintage lacks 1995Q4 after the 1995-96 shutdown), the value
+    is taken from the next vintage that has it, at most LATE_RELEASE_LIMIT quarters later, as
+    BGMS do. Older observations are never filled forward."""
     if var in FRED:
         s = fred_quarterly(var)
         return float(s[obs]) if obs < vintage and obs in s.index else np.nan
     m = vintage_matrix(var, **kw)
+    if vintage > m.columns.max() or obs not in m.index:
+        return np.nan
     v = first_available_vintage(m, vintage)
-    return float(m.at[obs, v]) if obs in m.index else np.nan
+    x = m.at[obs, v]
+    if np.isnan(x) and obs == vintage - 1:
+        for later in m.columns[(m.columns > v) & (m.columns <= vintage + LATE_RELEASE_LIMIT)]:
+            if np.isfinite(m.at[obs, later]):
+                return float(m.at[obs, later])
+    return float(x)
 
 
 def series_in_vintage(var: str, vintage: pd.Period, **kw) -> pd.Series:
@@ -161,17 +183,32 @@ def history(var: str, s: pd.Period, n: int = 40, **kw) -> pd.Series:
     return tr.iloc[-n:]
 
 
+def outcome_vintage(var: str, t: pd.Period, **kw) -> pd.Period | None:
+    """The vintage the outcome is read from: t+4, or the next vintage (at most
+    LATE_RELEASE_LIMIT later) if x_{t+3} was released late. None if not yet published."""
+    m = vintage_matrix(var, **kw)
+    have = m.columns[m.notna().any()]
+    start = max(t + 4, have.min())  # before the first vintage (CPI: 1994Q3), use the first one
+    for v in have[(have >= start) & (have <= start + LATE_RELEASE_LIMIT)]:
+        if t + 3 in m.index and np.isfinite(m.at[t + 3, v]):
+            return v
+    return None
+
+
 def outcome(var: str, t: pd.Period, **kw) -> float:
-    """Target realized: growth x_{t+3}/x_{t-1} - 1 (percent) or level x_{t+3}, both from the
-    first vintage containing x_{t+3} (dated t+4)."""
+    """Target realized: growth x_{t+3}/x_{t-1} - 1 (percent) or level x_{t+3}. Numerator and
+    denominator always come from one vintage: the first that contains x_{t+3} (dated t+4)."""
     if var in FRED:
         s = fred_quarterly(var)
         return float(s.get(t + 3, np.nan))
-    v = t + 4
-    num = value(var, t + 3, v, **kw)
+    v = outcome_vintage(var, t, **kw)
+    if v is None:
+        return np.nan
+    m = vintage_matrix(var, **kw)
+    num = float(m.at[t + 3, v])
     if var in LEVEL:
         return num
-    return 100 * (num / value(var, t - 1, v, **kw) - 1)
+    return 100 * (num / float(m.at[t - 1, v]) - 1)
 
 
 def last_forecast_quarter(var: str, **kw) -> pd.Period:

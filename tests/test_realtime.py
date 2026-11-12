@@ -89,3 +89,15 @@ def test_missing_vintage_falls_forward():
     m = rt.vintage_matrix("RGDP")
     v = rt.first_available_vintage(m, P("1996Q1"))
     assert v >= P("1996Q1") and m[v].notna().any()
+
+
+def test_delayed_release_taken_from_next_vintage():
+    """Vintage 1996Q1 lacks 1995Q4 (shutdown); BGMS use the 1996Q2 vintage's value."""
+    m = rt.vintage_matrix("RGDP")
+    assert np.isnan(m.at[P("1995Q4"), P("1996Q1")])
+    assert rt.value("RGDP", P("1995Q4"), P("1996Q1")) == pytest.approx(
+        m.at[P("1995Q4"), P("1996Q2")]
+    )
+    assert np.isfinite(rt.outcome("RGDP", P("1995Q1")))
+    # Older observations are never filled forward.
+    assert np.isnan(rt.value("RGDP", P("1940Q1"), P("1996Q1")))

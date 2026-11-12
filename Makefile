@@ -1,4 +1,4 @@
-.PHONY: install test test-fast lint manifest verify-raw aklmt noise-mc all
+.PHONY: install test test-fast lint manifest verify-raw aklmt noise-mc spf-replication all
 .DELETE_ON_ERROR:
 
 install:
@@ -26,5 +26,8 @@ aklmt:
 noise-mc:
 	uv run python -m ewh.sim.noise_mc
 
+spf-replication:
+	uv run python -m ewh.data.spf_replication
+
 # Grows phase by phase: data -> estimation -> tables/figures -> paper.
-all: verify-raw test aklmt noise-mc
+all: verify-raw test aklmt noise-mc spf-replication

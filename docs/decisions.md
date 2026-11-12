@@ -118,3 +118,31 @@ UNEMP, TB3M and TN10Y on BGMS's sample (1968Q4–2016Q4), each consensus coeffic
 pipeline (raw SPF and RTDSM files, 2026-11-11 snapshot) is within 0.15 of reference (i), with
 the same sign as reference (i) for at least 6 of 7; and the CG inflation coefficient (PGDP
 consensus, CG's sample 1969Q1–2014Q4) lies in [1.0, 1.5].
+
+## Decision 8: SPF replication, first run and loader fix (2026-11-11)
+- **First run (recorded as it happened):** verdict FAIL. All 7 headline consensus coefficients were
+  within 0.15 of reference (i) with matching signs, but the CG inflation coefficient (our PGDP
+  consensus on 1969Q1–2014Q4) was 1.522, outside [1.0, 1.5]. RGDP consensus was 0.59 against
+  0.44.
+- **Diagnosis:** a row-by-row merge with BGMS's panel showed our outcomes, forecasts and
+  revisions equal theirs exactly wherever both exist; the only difference was two missing
+  quarters (t = 1995Q1 and 1996Q1). The 1996Q1 NIPA vintage lacks the 1995Q4 observation
+  (delayed release after the 1995–96 shutdown); BGMS take it from the 1996Q2 vintage, our loader
+  did not.
+- **Fix:** `realtime.value` now takes a vintage's missing latest observation from the next
+  vintage that has it (at most two quarters later), never older observations. This is a data
+  rule, not a tolerance change; the tolerance and the CG band are unchanged.
+- **Second diagnosis and fixes (same day):** after the fix, T and N matched BGMS exactly but
+  t = 1996Q1 still differed: the 1995Q4 value exists only in the 1996Q2 vintage, which is on the
+  new chain-weighted base (January 1996 comprehensive revision) while the 1996Q1 survey's
+  forecasts are on the old base. (a) `realtime.outcome` now reads numerator and denominator from
+  one effective vintage (the first that holds x_{t+3}), which is the rebasing rule of Decision 7
+  applied consistently. (b) In replication mode only, the SPF forecast denominator for a survey
+  whose vintage lacks x_{t−1} uses BGMS's extrapolation rescaled by their base-change ratio.
+  Note for the paper: this single quarter moves the consensus RGDP coefficient by about 0.14,
+  which shows how fragile consensus CG coefficients are to one quarter with mis-based revisions.
+- **Final result:** after (a) and (b) and matching BGMS's spline fill for NGDP in 1996Q1, our
+  pipeline reproduces reference (i) to two decimals for all 14 series (consensus and individual),
+  and the CG coefficient is 1.41 on both our pipeline and BGMS's panel (CG's own processed data
+  give 1.19). Verdict PASS under the unchanged Decision 7 tolerance. `docs/spf_replication.md`
+  is the generated record. The first-run FAIL is disclosed here and will be in the PAP.
