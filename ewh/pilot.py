@@ -23,7 +23,7 @@ from ewh.prompts import tables as tb
 from ewh.provenance.archive import REPO_ROOT
 from ewh.sim import ar1
 
-OUT = REPO_ROOT / "data" / "pilot" / "qwen2-0.5b"
+OUT = REPO_ROOT / "data" / "pilot" / "qwen2-0.5b-mps20"
 K = 16
 
 
@@ -39,9 +39,12 @@ def main(argv):
         "Qwen2-0.5B-Instruct"
     ]
     tok = AutoTokenizer.from_pretrained(m["repo"], revision=m["revision"])
-    model = AutoModelForCausalLM.from_pretrained(
-        m["repo"], revision=m["revision"], torch_dtype=torch.float32
-    ).eval()
+    device = "mps" if torch.backends.mps.is_available() else "cpu"
+    model = (
+        AutoModelForCausalLM.from_pretrained(m["repo"], revision=m["revision"], dtype=torch.float32)
+        .eval()
+        .to(device)
+    )
     torch.set_num_threads(4)
     be = HFBackend(model, tok, m["revision"], "qwen2-0.5b", chat=True)
     table = tb.build_arm_a("pilot", ["qwen2-0.5b"], n_paths, rhos=(0.5,))
@@ -53,7 +56,6 @@ def main(argv):
     draws = read_draws(OUT / "draws", "qwen2-0.5b")
     d = arm_a.build_draws(table, draws, K)
     valid = np.isfinite(d.f_t).mean() * 0.5 + np.isfinite(d.f_tm1).mean() * 0.5
-    cov = eor.CovSpec("cr1", ("path",)) if hasattr(eor, "CovSpec") else None
     from ewh.estimators.types import CovSpec
 
     cov = CovSpec("cr1", ("path",))
@@ -88,6 +90,8 @@ def main(argv):
         tau_hat=float(np.sqrt(tau2)),
         between_paraphrase_sd=float(bs.std(ddof=1)),
         examples=draws[draws.draw >= 0].raw_text.head(8).tolist(),
+        kappa=float(np.nanmean(np.nanstd(np.vstack([d.f_t, d.f_tm1]), 1, ddof=1)) / 20.0),
+        device=device,
     )
     (OUT / "results.json").write_text(json.dumps(res, indent=2, default=float))
     print(json.dumps(res, indent=2, default=float))
