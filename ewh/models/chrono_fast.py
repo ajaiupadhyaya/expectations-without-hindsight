@@ -135,7 +135,30 @@ class FastChrono:
         """Full causal pass over right-padded prompts. Returns last-position logits (B, V) and
         the per-layer cache [(k, v)] with k, v (B, T, H, Dh). Padding sits after each prompt's
         last token, so causal attention keeps it out of every real position."""
-        tok = pr.tokens.to(self.device)
+        x, cache = self._forward_all(pr.tokens.to(self.device), keep_cache=True)
+        B = x.shape[0]
+        x_last = x[torch.arange(B, device=self.device), pr.lengths.to(self.device) - 1]
+        return self._logits(x_last), cache
+
+    @torch.inference_mode()
+    def continuation_logprob(self, seqs: list[list[int]], starts: list[int]) -> np.ndarray:
+        """Sum of log-probabilities of tokens seqs[b][starts[b]:] given the tokens before them
+        (HellaSwag scoring). Right-padded batch; only the needed positions get logits."""
+        B = len(seqs)
+        T = max(len(s) for s in seqs)
+        tok = torch.zeros((B, T), dtype=torch.long)
+        for b, s in enumerate(seqs):
+            tok[b, : len(s)] = torch.tensor(s)
+        x, _ = self._forward_all(tok.to(self.device), keep_cache=False)
+        out = np.zeros(B)
+        for b, (s, st) in enumerate(zip(seqs, starts, strict=True)):
+            lp = torch.log_softmax(self._logits(x[b, st - 1 : len(s) - 1]), -1)
+            target = torch.tensor(s[st:], device=self.device)
+            out[b] = float(lp.gather(1, target[:, None]).sum())
+        return out
+
+    def _forward_all(self, tok: torch.Tensor, keep_cache: bool):
+        """Final hidden states (B, T, D) of a full causal pass, and the per-layer cache."""
         B, T = tok.shape
         pos = torch.arange(T, device=self.device).expand(B, T)
         x0 = rms(self._embed(tok))
@@ -147,7 +170,8 @@ class FastChrono:
                 x = x + self.skip[i - self.half] * skips.pop()
             ve = ves[self.ve_layer[i]] if self.ve_layer[i] is not None else None
             q, k, v = self._qkv(i, rms(self._premix(i, x, x0)), ve, pos)
-            cache.append((k, v))
+            if keep_cache:
+                cache.append((k, v))
             y = F.scaled_dot_product_attention(
                 q.transpose(1, 2), k.transpose(1, 2), v.transpose(1, 2), is_causal=True
             )
@@ -155,8 +179,7 @@ class FastChrono:
             x = self._after_attn(i, x, x0, y)
             if i < self.half:
                 skips.append(x)
-        x_last = x[torch.arange(B, device=self.device), pr.lengths.to(self.device) - 1]
-        return self._logits(x_last), cache
+        return x, cache
 
     def _premix(self, i, x, x0):
         lam = self.blocks[i]["blk_l"]

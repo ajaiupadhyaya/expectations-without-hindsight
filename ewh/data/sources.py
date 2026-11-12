@@ -62,6 +62,14 @@ SOURCES: dict[str, Source] = {
             "?sc_lang=en&hash=34FA1C6BF0007996E1885C8C32E3BEF9",
             "rtdsm/2026-11-11/ROUTPUTQvQd.xlsx",
         ),
+        # HellaSwag validation split (Zellers et al. 2019; MIT licence in the authors' repository),
+        # pinned dataset revision; capability score for the ladder (plan D15).
+        Source(
+            "hellaswag_validation",
+            "https://huggingface.co/datasets/Rowan/hellaswag/resolve/"
+            "218ec52e09a7e7462a5400043bb9a69a41d06b76/data/validation-00000-of-00001.parquet",
+            "hellaswag/validation-00000-of-00001.parquet",
+        ),
         # FRED: 3-month T-bill (TB3MS), never revised; CSV download needs no API key.
         Source(
             "fred_tb3ms_20261111",

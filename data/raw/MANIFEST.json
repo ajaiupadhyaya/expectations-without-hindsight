@@ -30,6 +30,12 @@
       "sha256": "33fae406051a658c316580f8e8b5e461157e6663bc03b35648cc7cd3e89ee26b",
       "source_url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=TB3MS"
     },
+    "hellaswag/validation-00000-of-00001.parquet": {
+      "bytes": 6315951,
+      "retrieved_at": "2026-11-12T02:53:34Z",
+      "sha256": "899813071e1e95efafec90f856e1987d2150fa4d020fc005df6962c259f660cd",
+      "source_url": "https://us.aws.cdn.hf.co/xet-bridge-us/621ffdd236468d709f181e5d/93233800f7e5121d09ef2421875b5a73aab02f7b5f4b7244a7a4ba9cc38cebc4?X-Xet-Cas-Uid=public&response-content-disposition=inline%3B+filename*%3DUTF-8%27%27validation-00000-of-00001.parquet%3B+filename%3D%22validation-00000-of-00001.parquet%22%3B&user_id=public&xip=QCuL9Z2GUCs&Expires=1794455614&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly91cy5hd3MuY2RuLmhmLmNvL3hldC1icmlkZ2UtdXMvNjIxZmZkZDIzNjQ2OGQ3MDlmMTgxZTVkLzkzMjMzODAwZjdlNTEyMWQwOWVmMjQyMTg3NWI1YTczYWFiMDJmN2I1ZjRiNzI0NGE3YTRiYTljYzM4Y2ViYzRcXD9YLVhldC1DYXMtVWlkPXB1YmxpYyZyZXNwb25zZS1jb250ZW50LWRpc3Bvc2l0aW9uPWlubGluZSUzQitmaWxlbmFtZSUyQSUzRFVURi04JTI3JTI3dmFsaWRhdGlvbi0wMDAwMC1vZi0wMDAwMS5wYXJxdWV0JTNCK2ZpbGVuYW1lJTNEJTIydmFsaWRhdGlvbi0wMDAwMC1vZi0wMDAwMS5wYXJxdWV0JTIyJTNCJnVzZXJfaWQ9cHVibGljJnhpcD1RQ3VMOVoyR1VDcyIsIkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiRXBvY2hUaW1lIjoxNzk0NDU1NjE0fX19XX0_&Signature=MEUCIGRN3bMh82VjaAkYSfJaUpMPN%7EgU9iOlwTQphRenq%7Ey%7EAiEA3X8z39Nx55Sk-jxvZyDvipTeOH8pqVb0BN7FZNfDYSs_&Key-Pair-Id=01KXEF4KZ1B6FV465MAWR4M21F&Hash-Algorithm=SHA256"
+    },
     "rtdsm/2026-11-11/NOUTPUTQvQd.xlsx": {
       "bytes": 244863,
       "retrieved_at": "2026-11-11T23:57:42Z",

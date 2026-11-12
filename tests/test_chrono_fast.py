@@ -181,3 +181,18 @@ def test_stop_rule_tables():
     assert list(non) == [False, True, True, False, True, True, False]
     assert list(after) == [False, False, False, False, True, False, False]
     assert nl[0] and nl[3] and not nl[1]
+
+
+def test_continuation_logprob_matches_stepwise(ref):
+    model = cf.FastChrono(ref.state_dict(), CFG, dtype=torch.float32)
+    rng = np.random.default_rng(6)
+    ctx = [list(rng.integers(0, 97, n)) for n in (5, 9)]
+    cont = [list(rng.integers(0, 97, n)) for n in (3, 2)]
+    seqs = [c + e for c, e in zip(ctx, cont, strict=True)]
+    got = model.continuation_logprob(seqs, [len(c) for c in ctx])
+    for b in range(2):
+        want = 0.0
+        for j, tokid in enumerate(cont[b]):
+            lg = full_logits_fast(model, [ctx[b] + cont[b][:j]])[0]
+            want += float(torch.log_softmax(lg, -1)[tokid])
+        assert got[b] == pytest.approx(want, abs=1e-4)
