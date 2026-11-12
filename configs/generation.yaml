@@ -1,5 +1,5 @@
 # Generation config, bound to tag pap-v1 (plan D17).
-status: 'DRAFT until tag pap-v1: allocation fields are fixed after the GPU pilot (Task 3.8)'
+status: Frozen allocation for tag pap-v1 (substitution runs are conditional on the gate)
 templates_sha256: 1628ef20e2ea2b4800a7c9bbb7ba8d0916d49072a151dcd327724a40827736eb
 vendored_chronogpt_instruct_sha256: 60af30736d94f8db2be3da7cea5ca045430d33b8aaf384fe953a496380bdb462
 sampling:
@@ -9,11 +9,6 @@ sampling:
   max_new_tokens: 12
   greedy_read: true
   stop: first newline in decoded text, after stripping leading whitespace
-k_draws: null
-arm_a_paths_per_cell: null
-crossed_block_paths_per_cell: null
-gate_paths_per_cell: null
-shards: null
 models:
   chrono-1999:
     repo: manelalab/chrono-gpt-instruct-v1-19991231
@@ -159,3 +154,152 @@ models:
     repo: meta-llama/Llama-3.2-3B-Instruct
     revision: 0cb88a4f764b7a12671c53f0838cd831a0843b95
     role: ladder (gated)
+allocation:
+  k: 32
+  temperature: 1.0
+  max_new_tokens: 12
+  arm_a_paths: 40
+  crossed_paths: 20
+  crossed_models:
+  - chrono-1999
+  - chrono-2024
+  gate_n: 100
+  ladder_paths: 6
+  shard_size: 2000
+  armb_full:
+  - 1999
+  - 2009
+  - 2024
+tables:
+  chrono-1999:
+    n_prompts: 154876
+    n_shards: 78
+    sha256: 651ba314d681673cdc59d5f6a63cf73e5b708e77cab6b91f525f9fcfd4c7e250
+  chrono-2000:
+    n_prompts: 18268
+    n_shards: 10
+    sha256: 47df5662ac4a19bd6455ba03578941bc9286e349c9c014b80a9c8c2ae1327592
+  chrono-2001:
+    n_prompts: 18268
+    n_shards: 10
+    sha256: b4e5bbda71d1547426120fa92a92c5b6739ebdaf2860eaa6582081e40606e350
+  chrono-2002:
+    n_prompts: 18268
+    n_shards: 10
+    sha256: fbc877bd53eeb1a3490ded970b427b0f5eb482e77609763d5204300220cbe662
+  chrono-2003:
+    n_prompts: 18268
+    n_shards: 10
+    sha256: da74c6bf856f197d5edf7c5837b05f667305bb9acff372c474fd50c1e68cd38d
+  chrono-2004:
+    n_prompts: 39772
+    n_shards: 20
+    sha256: 9e8245dd566e5b412795f2601544712f5936406bf81ed560837baa98d61f2b1d
+  chrono-2005:
+    n_prompts: 18268
+    n_shards: 10
+    sha256: 7ea43f67f4a7bb5cfe347fa76fe4a797db1294ae9652291b1b0bc14f7962c610
+  chrono-2006:
+    n_prompts: 18268
+    n_shards: 10
+    sha256: 94a243d1b3dadde659b03f9a53030ba1fa8227b516a6bff186f5c02543f73cbe
+  chrono-2007:
+    n_prompts: 18268
+    n_shards: 10
+    sha256: f16483a7fd1bb26ae6067a34102f0e8af0225def62e5090015f3113f75d0080f
+  chrono-2008:
+    n_prompts: 18268
+    n_shards: 10
+    sha256: 27504122ac4d83c04c9df964aea88ed7ccf4375daa285fb8a1e073bf913da6f0
+  chrono-2009:
+    n_prompts: 149116
+    n_shards: 75
+    sha256: 0dfba90b53406e0cd32e98c8b9ce7e1184270837510884bfaf981c23cce48707
+  chrono-2010:
+    n_prompts: 18268
+    n_shards: 10
+    sha256: 84f60a17dea4a96e480c499d917a13985184cc170c66f1aeffb4de5eda6367aa
+  chrono-2011:
+    n_prompts: 18268
+    n_shards: 10
+    sha256: 0ee4350d3e6f82197dd979b1a939fd0f79c7f5dbf298ea4730223cac192f3fe1
+  chrono-2012:
+    n_prompts: 18076
+    n_shards: 10
+    sha256: 6389f074c534654332904ca96a0b2074d45acc96014e816ca8c690a43b4a3832
+  chrono-2013:
+    n_prompts: 18220
+    n_shards: 10
+    sha256: ceaa7bf906dc4a07847a462a2fd8752b39679cd77b730f178bceb5d98b6d5b68
+  chrono-2014:
+    n_prompts: 39772
+    n_shards: 20
+    sha256: 23ace431b97cdce13f775cab2586a22c16c99dcbbfc4145af118ea8247da667d
+  chrono-2015:
+    n_prompts: 18268
+    n_shards: 10
+    sha256: c168a48714b7a40453e6c4b2baa84022559172faf5939f1dca19bf9f3be064de
+  chrono-2016:
+    n_prompts: 18268
+    n_shards: 10
+    sha256: c9091be8d25e739113d92c2e2c7339807b7020627f169b61da75e3ea6fd6b5df
+  chrono-2017:
+    n_prompts: 18268
+    n_shards: 10
+    sha256: e5c263828f4ec7348a28ce95969ba5fd81b90388cf778b77dd443c952f177359
+  chrono-2018:
+    n_prompts: 18268
+    n_shards: 10
+    sha256: c62c21a1ea79b8ac17fce086eb6b34d3574daf6ac8e947099b1d241cc7bc541a
+  chrono-2019:
+    n_prompts: 39580
+    n_shards: 20
+    sha256: a7841c4788e491b5df5c211ca77f2de73c69dfb358e6c4bd7084a657155c172b
+  chrono-2020:
+    n_prompts: 18268
+    n_shards: 10
+    sha256: a9bf8ae139ea5433c90c98a5c316ea10bfddd08b9e19319425d65f0fa12edd08
+  chrono-2021:
+    n_prompts: 18268
+    n_shards: 10
+    sha256: ef428b545b9f270d4ee1cccbd549062900cb137ff26b7e5923d5cc74718939ed
+  chrono-2022:
+    n_prompts: 18268
+    n_shards: 10
+    sha256: c9a59f9e4b985dc72a05692c6de6a9568a0dd8d9042d8f2bb246565a25ee212b
+  chrono-2023:
+    n_prompts: 18076
+    n_shards: 10
+    sha256: 50a5f4396822b428cc17c4c650a09c2ce60aaf30cf49e3b6ff4cc18daa646494
+  chrono-2024:
+    n_prompts: 154876
+    n_shards: 78
+    sha256: c7b0b36ac526b9b541748e111efad9f31ae6b48647d88836b6b7e7c35d217871
+  Qwen2.5-0.5B-Instruct:
+    n_prompts: 2428
+    n_shards: 2
+    sha256: 5edde64d66d5b93c780b35a01019e4156d50627a9fc375ec9a27f45dfd6ddff5
+  Qwen2.5-1.5B-Instruct:
+    n_prompts: 2428
+    n_shards: 2
+    sha256: 8fc35588d3fcd4ffa519c7789c07209a833e28afb94205107d9083644c51f323
+  Qwen2.5-3B-Instruct:
+    n_prompts: 2428
+    n_shards: 2
+    sha256: 7733125561105289e62b51f10ce9ad99ce1a2555f6b166ade93e756809aeaa79
+  Qwen2.5-7B-Instruct:
+    n_prompts: 2428
+    n_shards: 2
+    sha256: d1069573e866f67982016742a159da7d2a9796241e48f3c78c38a85c50b314d3
+  Qwen2.5-14B-Instruct:
+    n_prompts: 2428
+    n_shards: 2
+    sha256: 5f2ce3d7b49951096dc95aa1cd7f484dd90b972422042df89fb8e33586099232
+  Llama-3.2-1B-Instruct:
+    n_prompts: 2428
+    n_shards: 2
+    sha256: 281af436c10d3e2ecbd4d4d47856ac66f3aa670d9b485f46b3f8c5d22483f427
+  Llama-3.2-3B-Instruct:
+    n_prompts: 2428
+    n_shards: 2
+    sha256: ec0a76cd08537bbf37aaeeaf08c8d2205a37108d95622e2a1505030f5710884f

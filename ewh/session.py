@@ -126,3 +126,42 @@ def expected_shards(models, substitutions=None, spec: Spec = CONFIRM) -> dict[st
     for failed, sub in (substitutions or {}).items():
         out[f"{sub}-for-{failed}"] = n_shards(substitution_rows(failed, b))
     return out
+
+
+def freeze(path=None) -> dict:
+    """Write the allocation and every pass-1 table's size and sha256 into configs/generation.yaml
+    (bound to the tag). The session refuses to generate from a table whose hash differs."""
+    from pathlib import Path
+
+    import yaml
+
+    from ewh.prompts.templates import templates_sha256
+
+    path = Path(path or Path(__file__).resolve().parents[1] / "configs" / "generation.yaml")
+    cfg = yaml.safe_load(path.read_text())
+    cfg["status"] = (
+        "Frozen allocation for tag pap-v1 (substitution runs are conditional on the gate)"
+    )
+    cfg["templates_sha256"] = templates_sha256()
+    cfg["allocation"] = {k: (list(v) if isinstance(v, tuple) else v) for k, v in ALLOC.items()}
+    for key in (
+        "k_draws",
+        "arm_a_paths_per_cell",
+        "crossed_block_paths_per_cell",
+        "gate_paths_per_cell",
+        "shards",
+    ):
+        cfg.pop(key, None)
+    cfg["tables"] = {}
+    for m in CHRONO + LADDER:
+        t = model_table(m)
+        cfg["tables"][m] = {
+            "n_prompts": len(t),
+            "n_shards": n_shards(t),
+            "sha256": tb.table_sha256(t),
+        }
+    path.write_text(
+        "# Generation config, bound to tag pap-v1 (plan D17).\n"
+        + yaml.safe_dump(cfg, sort_keys=False, width=120)
+    )
+    return cfg
