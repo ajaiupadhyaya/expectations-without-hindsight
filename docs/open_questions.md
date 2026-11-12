@@ -20,3 +20,8 @@ notes the 2025Q4 survey lacked jump-off values. Options: (a) drop the affected p
 quarters for NIPA series, 2 of 102 for housing); (b) keep them with the shorter history and a
 6-step (t) / 5-step (t−1) horizon. **Proposed default: (a)**, decided in the PAP before any model
 output exists. `realtime.history` raises on a stale vintage, so nothing is silently filled.
+
+## OQ3 (2026-11-11): Llama-3.2 access
+The Llama-3.2 tokenizer could not be downloaded with the Hugging Face token on this Mac (gated;
+AJ requested access on 2026-11-11). Needed before Phase 5 for the two Llama ladder models. If
+access is not granted, they drop from the descriptive ladder; nothing confirmatory depends on them.
