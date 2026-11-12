@@ -18,7 +18,10 @@ from ewh.estimators.types import CovSpec, Draws, Estimate
 from ewh.prompts.parse import is_valid
 from ewh.sim.benchmarks import ls_learner
 
-POOLED_RHOS = (0.2, 0.4, 0.6, 0.8, 1.0)  # rho = 0 excluded a priori (plan change 3)
+# Primary pooled estimand (Decision 10): equal weights over rho in {0.4, 0.6, 0.8, 1}.
+POOLED_RHOS = (0.4, 0.6, 0.8, 1.0)
+RHO2_WEIGHTS = {0.2: 0.04, 0.4: 0.16, 0.6: 0.36, 0.8: 0.64, 1.0: 1.0}  # robustness
+FAMILY = ("H1", "H2_LS", "H3")  # proposed Holm family (AJ decides in the PAP)
 KS = (1, 2, 4, 8, 16)
 COV = CovSpec("cr1", ("path",))
 
@@ -94,8 +97,8 @@ def ls_benchmark(table: pd.DataFrame, k: int = 8) -> Draws:
         np.repeat(f_tm1[:, None], k, 1),
         tt.loc[ids, "target"].to_numpy(float),
         units["rho"].to_numpy(float),
-        _codes(units["path_uid"])[:, None],
-        ("path",),
+        np.column_stack([_codes(units["path_uid"]), _codes(units["paraphrase"])]),
+        ("path", "paraphrase"),
     )
 
 
@@ -113,7 +116,53 @@ def _phi(z):
     return 0.5 * (1 + math.erf(z / math.sqrt(2)))
 
 
+def _t(values) -> dict:
+    """t-test across paraphrase-level estimates (template as a random factor; Decision 10)."""
+    from scipy import stats
+
+    v = np.asarray(values, float)
+    v = v[np.isfinite(v)]
+    n = len(v)
+    se = v.std(ddof=1) / math.sqrt(n)
+    df = n - 1
+    t = v.mean() / se if se > 0 else float("nan")
+    crit = stats.t.ppf(0.975, df)
+    return dict(
+        b=float(v.mean()),
+        se=float(se),
+        ci=(v.mean() - crit * se, v.mean() + crit * se),
+        p=float(2 * stats.t.sf(abs(t), df)),
+        df=df,
+        n_groups=n,
+        mde=float((crit + stats.t.ppf(0.8, df)) * se),
+        values=v.tolist(),
+    )
+
+
+def _paraphrase_stats(d: Draws, ls: Draws, xl: np.ndarray, cells) -> dict:
+    """Per-paraphrase pooled IV, one-draw coefficient, LS benchmark and H3 slopes."""
+    out = {k: [] for k in ("iv", "naive", "ls", "h3", "h3_ls")}
+    par_d, par_l = d.column("paraphrase"), ls.column("paraphrase")
+    for p in np.unique(par_d):
+        dp, lp = d.subset(par_d == p), ls.subset(par_l == p)
+        iv = eor.pooled_equal_weight(eor.by_cell(eor.split_iv, dp, COV), dp, COV, cells)
+        nv = eor.pooled_equal_weight(eor.by_cell(eor.naive_stacked, dp, COV), dp, COV, cells)
+        lsp = eor.pooled_equal_weight(eor.by_cell(eor.split_iv, lp, COV), lp, COV, cells)
+        ip = eor.by_cell(lambda dd, cov: implied_persistence(dd, xl[dd.uid], cov), dp, COV)
+        ipl = eor.by_cell(lambda dd, cov: implied_persistence(dd, xl[dd.uid], cov), lp, COV)
+        out["iv"].append(iv.b)
+        out["naive"].append(nv.b)
+        out["ls"].append(lsp.b)
+        out["h3"].append(slope_on_rho(ip)["b"])
+        out["h3_ls"].append(slope_on_rho(ipl)["b"])
+    return {k: np.array(v) for k, v in out.items()}
+
+
 def analyse(table: pd.DataFrame, draws: pd.DataFrame, k: int) -> dict:
+    """Every Arm A estimate. Primary inference: t-tests across the 12 paraphrases of
+    per-paraphrase pooled statistics (equal weights over rho 0.4-1). Path-clustered versions over
+    the full sample, rho^2 weights, the per-cell table and the noise ladder are robustness and
+    descriptive rows."""
     d = build_draws(table, draws, k)
     g = build_draws(table, draws, k, greedy=True)
     xl = x_last_t(table)
@@ -141,21 +190,39 @@ def analyse(table: pd.DataFrame, draws: pd.DataFrame, k: int) -> dict:
     out["by_rho"] = {name: {r: e for r, e in by.items()} for name, by in est.items()}
 
     cells = [r for r in POOLED_RHOS if r in est["split_iv"]]
+    # primary: paraphrase t-tests
+    ps = _paraphrase_stats(d, ls, xl, cells)
+    out["H1"] = _t(ps["naive"] - ps["iv"])
+    out["H2"] = _t(ps["iv"])
+    out["H2_LS"] = _t(ps["iv"] - ps["ls"])
+    out["H3"] = _t(ps["h3"])
+    out["H3_LS"] = _t(ps["h3"] - ps["h3_ls"])
+    from ewh.inference.multiple import holm, holm_adjusted
+
+    pv = {h: out[h]["p"] for h in FAMILY}
+    out["holm"] = dict(reject=holm(pv), adjusted=holm_adjusted(pv))
+
+    # robustness: path-clustered over the full sample; rho^2 weights
     pooled = {
         name: eor.pooled_equal_weight(by, d if name != "ls_learner" else ls, COV, cells)
         for name, by in est.items()
         if name not in ("greedy",)
     }
     out["pooled"] = pooled
-    out["H1"] = eor.difference(pooled["naive_stacked"], pooled["split_iv"], d, COV, "H1")
-    out["H2"] = pooled["split_iv"]
-    # H2-LS: model minus learner on the same paths (both pooled over the same cells)
-    out["H2_LS"] = eor.difference(pooled["split_iv"], pooled["ls_learner"], d, COV, "H2_LS")
+    r2 = {c: w for c, w in RHO2_WEIGHTS.items() if c in est["split_iv"]}
+    out["rho2_weights"] = {
+        name: eor.pooled_weighted(est[name], d, COV, r2) for name in ("split_iv", "naive_stacked")
+    }
+    out["path_clustered"] = {
+        "H1": eor.difference(pooled["naive_stacked"], pooled["split_iv"], d, COV, "H1"),
+        "H2": pooled["split_iv"],
+        "H2_LS": eor.difference(pooled["split_iv"], pooled["ls_learner"], d, COV, "H2_LS"),
+    }
     ip = eor.by_cell(lambda dd, cov: implied_persistence(dd, xl[dd.uid], cov), d, COV)
     ip_ls = eor.by_cell(lambda dd, cov: implied_persistence(dd, xl[dd.uid], cov), ls, COV)
     out["implied_persistence"] = ip
-    out["H3"] = slope_on_rho(ip)
-    out["H3_LS"] = _slope_contrast(ip, ip_ls)
+    out["path_clustered"]["H3"] = slope_on_rho(ip)
+    out["path_clustered"]["H3_LS"] = _slope_contrast(ip, ip_ls)
     return out
 
 
