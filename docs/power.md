@@ -101,3 +101,14 @@ Method (b) across paraphrases: MDE = (t5,0.975 + t5,0.80) x sqrt(tau^2/6 + rsd1^
 Floor from paraphrase heterogeneity alone: tau 0.0: 0.000, tau 0.025: 0.036, tau 0.05: 0.071, tau 0.1: 0.142.
 
 **Reading.** With six paraphrases the MDE target of 0.05 (plan D13) is met only if tau is about 0.025 or less, whatever the number of paths; at tau = 0.05 the floor is about 0.07. More paths shrink only the sampling term. tau is calibrated from the CPU pilot (docs/pilot_log.md).
+
+## Arm B: pooled inference (D12) and MDE of H4
+
+Real-time AR(4) benchmark panel: 1344 variable-quarters, 97 quarters, 14 variables, COVID target quarters excluded, each variable scaled by its pre-2000 s.d. Null panels: 400 moving-block bootstraps (block 8 quarters) of revision quarters.
+
+| Method | Rejection rate at 5% under the null |
+|---|---|
+| Driscoll-Kraay, Bartlett 4 lags, fixed-b critical value | 0.130 |
+| Block-t, 8 time blocks (7 df) | 0.045 |
+
+Only block-t holds its size; Driscoll-Kraay over-rejects even with fixed-b critical values on 97 overlapping quarters. Proposed primary for pooled Arm B inference: block-t. Its MDE for a forecaster as smooth as the benchmark: 0.327 in pre-2000 s.d. units (block-t s.e. 0.100; DK would give 0.322 but is not valid here). Model forecasts add draw and template noise, so this is a lower bound on the H4 MDE. It exceeds 0.25, so the pre-registered wording applies: a non-rejection of H4 is uninformative about effects smaller than the MDE, and the paper makes no 'no bias' claim. (The AR benchmark's own pooled coefficient is -0.063; descriptive, not a hypothesis.)

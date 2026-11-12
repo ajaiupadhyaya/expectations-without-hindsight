@@ -146,3 +146,11 @@ consensus, CG's sample 1969Q1–2014Q4) lies in [1.0, 1.5].
   and the CG coefficient is 1.41 on both our pipeline and BGMS's panel (CG's own processed data
   give 1.19). Verdict PASS under the unchanged Decision 7 tolerance. `docs/spf_replication.md`
   is the generated record. The first-run FAIL is disclosed here and will be in the PAP.
+
+## Decision 9: Real-time AR benchmark must be stationary (2026-11-11)
+- **Finding:** in the Arm B power check, real-time AR(4) fits on histories containing the 2020
+  collapse are explosive and give revisions of thousands of standard deviations (e.g. UNEMP,
+  t = 2020Q4).
+- **Choice:** the real-time AR benchmark (plan D12, used for RMSE comparisons and the power
+  check) fits an AR(4) with intercept to the 40 shown values; if the fit is not stationary it
+  falls back to an AR(1) with coefficient capped at 0.99. Fixed before any model output.
