@@ -39,6 +39,7 @@ def _pair_rows(base: dict, path: np.ndarray, template: Template) -> list[dict]:
                 prefill=prefill,
                 target=float(path[SHOWN + 1]),
                 x_last=float(path[shown - 1]),
+                hist=",".join(str(int(v)) for v in path[:shown]),
             )
         )
     return rows
