@@ -99,3 +99,11 @@ models vs SPF; **C3** leakage wedge on measured bias; **C4** capability ladder.
   and must be cited as the accuracy half of the wedge.
 - **C4 (capability ladder): partly anticipated** descriptively (Bini et al.; Jaworski–Alam on
   noise falling with capability). It stays descriptive, as the handoff already says.
+
+## Re-run before the freeze (2026-11-12)
+`uv run python scripts/novelty_openalex.py 2026-11-01`: no new paper overlaps C1 or C2. Closest
+new items, read in full abstract: Li, Wu, Chen and Zheng, "Same Answer, Different Future: Matched
+Predictions Do Not Imply Matched Belief Updating in Language Models", arXiv:2611.07913
+(2026-11-05) — belief persistence in a Bernoulli task, no forecast-revision regression or noise
+correction; Fu, Deng, Hong and Wang, "Timing is Everything", arXiv:2611.05781 (2026-11-04) —
+temporal membership inference, context for leakage. To be re-run once more at the tag.

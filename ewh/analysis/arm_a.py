@@ -22,7 +22,7 @@ from ewh.sim.benchmarks import ls_learner
 POOLED_RHOS = (0.4, 0.6, 0.8, 1.0)
 RHO2_WEIGHTS = {0.2: 0.04, 0.4: 0.16, 0.6: 0.36, 0.8: 0.64, 1.0: 1.0}  # robustness
 FAMILY = ("H1", "H2_LS", "H3")  # proposed Holm family (AJ decides in the PAP)
-KS = (1, 2, 4, 8, 16)
+KS = (1, 2, 4, 8, 16, 32)
 COV = CovSpec("cr1", ("path",))
 
 

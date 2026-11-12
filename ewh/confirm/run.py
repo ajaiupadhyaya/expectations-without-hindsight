@@ -114,14 +114,16 @@ def _armb_inputs(root: Path, spec: session.Spec, gate: dict):
         ignore_index=True,
     ).drop_duplicates(["model", "prompt_id", "draw"])
     passing = [session.year(m) for m in gate["passing_chrono"]]
-    return b, draws, passing
+    rates = B.parse_rate_armb(b, draws)  # PAP section 5: Arm B also needs a 95% parse rate
+    passing = [y for y in passing if rates.get(f"chrono-{y}", 0.0) >= G.THRESHOLDS["parse_rate"]]
+    return b, draws, passing, rates
 
 
-def arm_b_family(root: Path, spec: session.Spec, gate: dict) -> dict:
-    b, draws, passing = _armb_inputs(root, spec, gate)
+def arm_b_family(root: Path, spec: session.Spec, gate: dict, human: bool = True) -> dict:
+    b, draws, passing, rates = _armb_inputs(root, spec, gate)
     run = lambda assign, **kw: B.build_draws_b(b, draws, assign, K, **kw)  # noqa: E731
     rolling = run(B.assignment("primary", passing=passing))
-    out: dict = {"passing_years": passing}
+    out: dict = {"passing_years": passing, "armb_parse_rates": rates}
     out["H4"] = B.block_t(*rolling)
     contaminated = lambda v, t: pairs.contaminated(t, 2024)  # noqa: E731
     if 2024 in passing:
@@ -145,7 +147,26 @@ def arm_b_family(root: Path, spec: session.Spec, gate: dict) -> dict:
     if 1999 in passing and 2009 in passing:
         sec["vintage_2009_did"] = _did_2009(run)
     sec["per_variable"] = B.per_variable(*rolling).to_dict(orient="records")
-    sec["rmse_rolling"] = B.rmse(rolling[0])
+    # human and benchmark comparisons on the same pairs (scaled units). Dry runs skip them so
+    # no further SPF statistic on the Arm B sample is seen before the freeze.
+    if not human:
+        out["secondary"] = sec
+        out["robustness"] = {}
+        return _jsonable(out)
+    cons, indiv = B.spf_draws(rolling[1], True), B.spf_draws(rolling[1], False)
+    ar = B.ar_draws(rolling[1])
+    sec["spf_consensus"] = B.block_t(*cons)
+    sec["spf_individual"] = B.block_t(*indiv)
+    sec["ar4_benchmark"] = B.block_t(*ar)
+    sec["model_minus_spf_consensus"] = B.block_contrast_pairs(rolling, cons)
+    single = B.block_t(*rolling, estimator=lambda d, cov: B.eor.naive_single(d, cov))
+    sec["model_single_draw"] = single
+    sec["model_single_minus_spf_individual"] = dict(
+        b=single["b_full"] - sec["spf_individual"]["b_full"]
+    )
+    sec["rmse"] = dict(model=B.rmse(rolling[0]), spf_consensus=B.rmse(cons[0]), ar4=B.rmse(ar[0]))
+    if 2024 in passing:
+        sec["rmse_contaminated"] = dict(v2024=B.rmse(c24[0]), valid=B.rmse(cvalid[0]))
     out["secondary"] = sec
 
     # robustness rows
@@ -283,7 +304,10 @@ def main(argv: list[str]) -> int:
             res["substitutions"] = substitutions_from(res)
         else:
             gate = json.loads((RESULTS / f"{prefix}gate.json").read_text())
-            res = (arm_a_family if family == "arm_a" else arm_b_family)(root, spec, gate)
+            if family == "arm_a":
+                res = arm_a_family(root, spec, gate)
+            else:
+                res = arm_b_family(root, spec, gate, human=not dry)
     except Exception:
         if not dry:
             binding.write_once(RESULTS / f"{family}.failed.md", traceback.format_exc())

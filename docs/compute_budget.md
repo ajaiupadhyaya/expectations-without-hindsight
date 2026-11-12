@@ -37,3 +37,9 @@ number of paraphrases, both fit.
 x 24 x 6 x 80 x 2 = 138,240; crossed block about 11,500; gate about 18,200: about 853,000 prompts,
 about 10 hours on an RTX 4090 (about $9) or roughly a third of that time on an H100 at a similar
 total. Still well inside the $50 cap.
+
+**Frozen allocation (2026-11-12, `configs/generation.yaml`):** 959,916 prompts in 505 shards
+(26 ChronoGPT vintages, of which 1999, 2009 and 2024 run every Arm B quarter, plus 7 ladder
+models), K = 32 plus a greedy read. At the pilot's ~25–30 prompts/s on an RTX 4090 this is about
+9–11 GPU-hours (about $8–10 at $0.89/hr) plus model downloads and loads; an H100 should take
+roughly a third of the time at about $4/hr. Session ceiling proposed in the PAP (A14): $35.

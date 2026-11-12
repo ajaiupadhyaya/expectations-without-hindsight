@@ -214,3 +214,101 @@ def rmse(d: Draws) -> float:
     f = np.nanmean(d.f_t, 1)
     e = d.x - f
     return float(np.sqrt(np.nanmean(e**2)))
+
+
+# ---------------------------------------------------------------- comparisons on the same pairs
+def _pair_frame(info: pd.DataFrame) -> pd.DataFrame:
+    p = info[["variable", "t", "quarter"]].drop_duplicates(["variable", "t"]).reset_index(drop=True)
+    p["sd"] = p.variable.map({v: pre2000_sd(v) for v in p.variable.unique()})
+    return p
+
+
+def _point_draws(f_t, f_tm1, x, variable, quarter, extra_cluster=None) -> Draws:
+    """Deterministic forecasts as Draws: 8 identical draws (the common sample needs 8 valid
+    draws; with zero spread the IV equals OLS)."""
+    f_t, f_tm1 = np.asarray(f_t, float), np.asarray(f_tm1, float)
+    cl = [np.asarray(quarter)]
+    names = ["quarter"]
+    if extra_cluster is not None:
+        cl.append(pd.factorize(extra_cluster)[0])
+        names.append("forecaster")
+    return Draws(
+        np.repeat(f_t[:, None], 8, 1),
+        np.repeat(f_tm1[:, None], 8, 1),
+        np.asarray(x, float),
+        pd.factorize(variable)[0].astype(float),
+        np.column_stack(cl),
+        tuple(names),
+    )
+
+
+def spf_draws(info: pd.DataFrame, consensus: bool) -> tuple[Draws, pd.DataFrame]:
+    """SPF forecasts (BGMS construction, Arm B mode) on the model sample's pairs, scaled."""
+    from ewh.data import spf
+
+    pf = _pair_frame(info)
+    rows = []
+    for v in pf.variable.unique():
+        s = spf.spf_pairs(v, "armb")
+        s = s.assign(variable=v, t=s.t.astype(str))
+        rows.append(s)
+    s = pd.concat(rows).merge(pf, on=["variable", "t"]).dropna(subset=["err", "rev"])
+    counts = s.groupby("ID").ID.transform("size")
+    s = s[counts >= spf.MIN_PAIRS]
+    if consensus:
+        s = s.groupby(["variable", "t", "quarter", "sd"], as_index=False)[
+            ["fc", "fc_prev", "outcome"]
+        ].mean()
+    d = _point_draws(
+        s.fc / s.sd,
+        s.fc_prev / s.sd,
+        s.outcome / s.sd,
+        s.variable,
+        s.quarter,
+        None if consensus else s.ID,
+    )
+    return d, s.reset_index(drop=True)
+
+
+def ar_draws(info: pd.DataFrame) -> tuple[Draws, pd.DataFrame]:
+    """Real-time AR(4) benchmark (stationarity fallback, Decision 9) on the same pairs."""
+    from ewh.inference.power_armb import ar_forecast
+
+    pf = _pair_frame(info)
+    f_t, f_tm1, x = [], [], []
+    for v, t in zip(pf.variable, pf.t, strict=True):
+        tp = pd.Period(t)
+        f_tm1.append(ar_forecast(rt.history(v, tp - 1).to_numpy(), 5))
+        f_t.append(ar_forecast(rt.history(v, tp).to_numpy(), 4))
+        x.append(rt.outcome(v, tp))
+    sc = pf.sd.to_numpy()
+    d = _point_draws(
+        np.array(f_t) / sc, np.array(f_tm1) / sc, np.array(x) / sc, pf.variable, pf.quarter
+    )
+    return d, pf
+
+
+def block_contrast_pairs(model: tuple[Draws, pd.DataFrame], other: tuple[Draws, pd.DataFrame]):
+    """Model minus another forecaster on the same quarters, block by block (block-t)."""
+    dm, im = model
+    do, io = other
+    bm, bo = blocks(im.quarter.to_numpy()), blocks(io.quarter.to_numpy())
+    diffs = [pooled_b(dm.subset(bm == i)) - pooled_b(do.subset(bo == i)) for i in range(BLOCKS)]
+    res = t_test(diffs)
+    res["b_full"] = pooled_b(dm) - pooled_b(do)
+    return res
+
+
+def parse_rate_armb(table: pd.DataFrame, draws: pd.DataFrame) -> dict[str, float]:
+    """Share of valid sampled draws on each model's Arm B prompts (Section 5 of the PAP)."""
+    tb = table[["prompt_id", "hist"]].drop_duplicates("prompt_id")
+    d = draws[draws.draw >= 0].merge(tb, on="prompt_id")
+    hist = {
+        p: np.array([float(v) for v in h.split(",")])
+        for p, h in zip(tb.prompt_id, tb["hist"], strict=True)
+    }
+    ok = [
+        is_valid(v if (v is not None and math.isfinite(v)) else None, hist[p])
+        for v, p in zip(d.parsed, d.prompt_id, strict=True)
+    ]
+    return d.assign(ok=ok).groupby("model").ok.mean().to_dict()
