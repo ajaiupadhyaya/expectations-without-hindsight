@@ -4,7 +4,10 @@
 set -euo pipefail
 cd /workspace/ewh
 export HF_HOME=/workspace/hf HF_HUB_DISABLE_XET=1 HF_HUB_DOWNLOAD_TIMEOUT=60
-python3 -m pip install --quiet "uv==0.10.4"
+# The image blocks system-wide pip (PEP 668): install uv into its own venv.
+python3 -m venv /workspace/uvenv
+/workspace/uvenv/bin/pip install --quiet "uv==0.10.4"
+export PATH=/workspace/uvenv/bin:$PATH
 uv sync --frozen --quiet
 nvidia-smi --query-gpu=name,driver_version,memory.total --format=csv,noheader
 uv run python -c "import torch; print('torch', torch.__version__, 'cuda', torch.version.cuda, torch.cuda.is_available())"

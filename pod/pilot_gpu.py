@@ -56,7 +56,10 @@ def main():
     bin_path = hf_hub_download(M["repo"], "pytorch_model.bin", revision=M["revision"])
     cfg_path = hf_hub_download(M["repo"], "config.pt", revision=M["revision"])
     out["download_seconds"] = time.time() - t0
-    config = torch.load(cfg_path, map_location="cpu", weights_only=True)
+    raw_cfg = torch.load(cfg_path, map_location="cpu", weights_only=True)
+    out["config_pt"] = {k: str(v) for k, v in raw_cfg.items()}
+    # config.pt also carries keys the constructor does not take (e.g. model_type)
+    config = {k: raw_cfg[k] for k in ("vocab_size", "num_layers", "num_heads", "model_dim")}
     t1 = time.time()
     sd = torch.load(bin_path, map_location="cpu", mmap=True, weights_only=True)
     fast = cf.FastChrono(sd, config, device="cuda", dtype=torch.bfloat16)
@@ -115,17 +118,21 @@ def main():
         a = mod.generate(ref, torch.tensor([s], device="cuda"), 12, 1792, temperature=1.0)
         v = parse_number(enc.decode(a[0, len(s) :].tolist()), row.fmt, str(row.prefill).rstrip(":"))
         theirs.append(v)
+    del ref
+    torch.cuda.empty_cache()
     be = ChronoBackend(fast, M["revision"], "chrono-base-1999")
-    sb = be.sample(
-        list(table.prompt_id[:200]),
-        list(zip(table.input_text[:200], table.prefill[:200], strict=True)),
-        1,
-        SEED,
-        1.0,
-        12,
-    )
-    for txt, row in zip(sb.texts, table.itertuples(), strict=False):
-        ours.append(parse_number(txt[1], row.fmt, str(row.prefill).rstrip(":")))
+    for i in range(0, 200, 25):
+        chunk = table.iloc[i : i + 25]
+        sb = be.sample(
+            list(chunk.prompt_id),
+            list(zip(chunk.input_text, chunk.prefill, strict=True)),
+            1,
+            SEED,
+            1.0,
+            12,
+        )
+        for txt, row in zip(sb.texts, chunk.itertuples(), strict=True):
+            ours.append(parse_number(txt[1], row.fmt, str(row.prefill).rstrip(":")))
     th = np.array([v for v in theirs if v is not None])
     ou = np.array([v for v in ours if v is not None])
     out["parse_rate_theirs"] = len(th) / len(theirs)
@@ -133,8 +140,7 @@ def main():
     out["ks_p_sampled_numbers"] = (
         float(stats.ks_2samp(th, ou).pvalue) if len(th) and len(ou) else None
     )
-    del ref
-    torch.cuda.empty_cache()
+    Path("pilot_gpu_partial.json").write_text(json.dumps(out, indent=2, default=str))
 
     # 4. Throughput at the planned K, by batch size
     thr = {}

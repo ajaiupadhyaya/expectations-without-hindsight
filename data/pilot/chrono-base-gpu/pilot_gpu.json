@@ -1,0 +1,32 @@
+{
+  "model": "manelalab/chrono-gpt-v1-19991231",
+  "revision": "45d6568340081add5c5b1444feb17a94b8f8199d",
+  "torch": "2.15.0+cu132",
+  "gpu": "NVIDIA GeForce RTX 4090",
+  "cuda": "13.2",
+  "python": "3.12.3",
+  "download_seconds": 0.6592307090759277,
+  "config_pt": {
+    "model_type": "ChronoGPT",
+    "vocab_size": "50304",
+    "num_layers": "52",
+    "num_heads": "12",
+    "model_dim": "1536"
+  },
+  "load_seconds": 47.242840051651,
+  "prefill_kl_max": 0.03961572051048279,
+  "prefill_top1_agree": "20/20",
+  "greedy_identical": "1/50",
+  "parse_rate_theirs": 0.58,
+  "parse_rate_ours": 0.675,
+  "ks_p_sampled_numbers": 0.9456360552544885,
+  "prompts_per_second": {
+    "K16_B16": 38.700375822706874,
+    "K16_B32": 41.88996192740781,
+    "K16_B64": 31.092747894943404,
+    "K32_B16": 30.727262654091064,
+    "K32_B32": 29.774202486194646,
+    "K32_B64": 23.18776423634828
+  },
+  "max_memory_gb": 19.072523776
+}

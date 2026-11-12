@@ -5,9 +5,9 @@ Hard cap: $50 of RunPod credit in total, storage included (AJ, 2026-11-11).
 ## Spent so far
 | Date | Item | Cost |
 |---|---|---|
-| — | nothing yet | $0.00 |
+| 2026-11-12 | GPU pilot, RTX 4090, pod r5zmy0q27169tc, 01:27–02:31 UTC (deleted, confirmed by list-pods) | about $0.95 (billing not yet posted) |
 
-## GPU pilot (Task 3.8) — awaiting AJ's go
+## GPU pilot (Task 3.8) — done 2026-11-12 (docs/pilot_log.md, Pilot 2)
 - Model: `manelalab/chrono-gpt-v1-19991231` (non-instruct base, non-confirmatory), pilot seeds,
   rho = 0.5, 480 prompts. Measures: sampler equivalence on full weights, parse rate,
   prompts per second by batch size and K, load time. No forecast statistics.
@@ -24,3 +24,11 @@ Hard cap: $50 of RunPod credit in total, storage included (AJ, 2026-11-11).
 | Gate, per model | 7 kinds x n_g | |
 | Arm B, per full run | 68,544 | 5 runs (annual rolling, six-vintage rolling, 1999, 2009, 2024 throughout) |
 | Ladder | one third of Arm A units | descriptive; cut first |
+
+## What the pilot implies for the confirmatory session (RTX 4090 figures; an H100 is faster)
+At K = 32 and batch 32, about 30 prompts/s on Arm A prompts (Arm B prompts are ~40% longer;
+assume ~22/s). Illustrative full design: Arm B 5 runs x 68,544 = 342,720 prompts; Arm A 6
+vintages x 12 templates x 6 rho x 80 paths x 2 = 69,120; crossed block ~5,760; gate 26 x 700
+= 18,200: about 436,000 prompts, about 5 hours on a 4090 (about $4.50) plus model loads. Compute
+is not the binding constraint under the $50 cap: Arm A on all 26 vintages, or doubling the
+number of paraphrases, both fit.

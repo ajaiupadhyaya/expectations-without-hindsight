@@ -175,3 +175,11 @@ Proposals only; AJ decides in Phase 4. Evidence in `docs/power.md`.
   coefficient (tau) is about 0.025 or less. Options for AJ: accept a larger MDE, or add
   paraphrases before the freeze (doubling to 12 paraphrases lowers the tau floor from 1.43 tau to 0.89 tau, about 38%);
   no ChronoGPT output exists yet, so adding templates now is still allowed.
+
+## Decision 11: Sampler accepted; proposed session preflight rule (2026-11-12)
+- **Finding:** on full weights (pilot 2) the cached sampler agrees with the authors' code to bf16
+  tolerance (teacher-forced top-1 agreement 316/322 at margins above 0.1; sampled-number KS
+  p = 0.95). Exact greedy identity is not attainable in bf16.
+- **Proposed preflight for every instruct vintage in the session (for the PAP):** on 50 pilot-
+  table prompts, teacher-forced top-1 agreement at least 95% of steps with authors' margin above
+  0.1, and prompt-pass max KL below 0.1; a vintage that fails is not generated and is reported.
