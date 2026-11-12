@@ -196,3 +196,51 @@ def test_continuation_logprob_matches_stepwise(ref):
             lg = full_logits_fast(model, [ctx[b] + cont[b][:j]])[0]
             want += float(torch.log_softmax(lg, -1)[tokid])
         assert got[b] == pytest.approx(want, abs=1e-4)
+
+
+def test_ids_beyond_the_tokenizer_vocab_do_not_crash_the_stop_rule(ref):
+    """Regression (Deviation 2): ChronoGPT's embedding has 50,304 rows but the gpt2 tokenizer has
+    50,257 ids, so a sampled padding id indexed past the stop tables (session attempt 1, CUDA
+    device-side assert). Padding ids must carry no text and no stop flag."""
+    model = cf.FastChrono(ref.state_dict(), CFG, dtype=torch.float32)
+    n_tok = 60  # "tokenizer" ids 0..59; model ids 60..96 are padding
+    tables = cf.stop_tables(lambda t: "1" if t < n_tok else "", n_tok)
+    rng = np.random.default_rng(11)
+    pr = prompts(rng, [8, 5])
+    bases = np.array([cf.prompt_base(9, "rev", p) for p in ("a", "b")], dtype=np.uint64)
+    g = cf.generate(model, pr, bases, n_draws=500, max_new_tokens=3, greedy=True, tables=tables)
+    assert (g.tokens >= n_tok).any()  # padding ids were sampled and handled
+
+
+@pytest.mark.slow
+def test_chrono_backend_end_to_end_on_real_prompts(tmp_path):
+    """The session path never exercised by the CPU dry run: ChronoBackend through run_shards on
+    real confirmatory prompts (every block, incl. the longest Arm B prompts), then HellaSwag
+    scoring, on a tiny random model with ChronoGPT's 50,304-row vocabulary."""
+    import pandas as pd
+
+    from ewh import session
+    from ewh.capability import hellaswag as hs
+    from ewh.models.backend import ChronoBackend
+    from ewh.models.ledger import Ledger
+    from ewh.models.runner import GenerationConfig, read_draws, run_shards
+
+    torch.manual_seed(1)
+    cfg = dict(vocab_size=50304, num_layers=4, num_heads=2, model_dim=32)
+    m = vendored().ChronoGPT(**cfg)
+    with torch.no_grad():
+        for p in m.parameters():
+            p.copy_(torch.randn_like(p) * 0.3)
+    fast = cf.FastChrono(m.state_dict(), cfg, dtype=torch.float32)
+    t = session.model_table("chrono-1999")
+    longest = t.input_text.str.len().nlargest(4).index
+    rows = pd.concat([t.groupby("block").head(3), t.loc[longest]]).drop_duplicates("prompt_id")
+    rows = rows.reset_index(drop=True)
+    be = ChronoBackend(fast, "rev", "tiny")
+    run_shards(
+        be, rows, tmp_path, GenerationConfig(4, 1.0, 12, 1, 100), Ledger(tmp_path / "l.jsonl"), 8
+    )
+    d = read_draws(tmp_path, "tiny")
+    assert len(d) == len(rows) * 5 and set(d.prompt_id) == set(rows.prompt_id)
+    res = hs.score(hs.items().head(3), hs.chrono_loglik(fast))
+    assert res

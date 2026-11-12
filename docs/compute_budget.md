@@ -43,3 +43,8 @@ total. Still well inside the $50 cap.
 models), K = 32 plus a greedy read. At the pilot's ~25–30 prompts/s on an RTX 4090 this is about
 9–11 GPU-hours (about $8–10 at $0.89/hr) plus model downloads and loads; an H100 should take
 roughly a third of the time at about $4/hr. Session ceiling proposed in the PAP (A14): $35.
+
+## Confirmatory session (2026-11-12)
+Pod `wknwaqrygxqk91`: A100 SXM 80GB, Secure, US-MD-1, $1.79/h, 150 GB container disk, 40 GB volume.
+Created 03:56:04Z. Spend before the session: about $0.95 (GPU pilot). Session ceiling (A14): $35.
+End time and final spend: to be filled from RunPod billing when the pod is deleted.

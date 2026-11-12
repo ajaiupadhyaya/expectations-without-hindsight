@@ -5,7 +5,7 @@
     python -m ewh.confirm.run arm_b    # H4, H5 (Holm family), secondaries, robustness rows
     python -m ewh.confirm.run dry-generate | gate --dry-run | arm_a --dry-run | arm_b --dry-run
 
-A real run refuses unless the tag binding holds (annotated `pap-v1.1`, bound files unchanged), the
+A real run refuses unless the tag binding holds (annotated `pap-v1.2`, bound files unchanged), the
 raw archive verifies, the generation ledger is intact and every pre-registered shard (and nothing
 else) is present and matches the manifest. It then writes docs/results/<family>.attempt and only
 after that reads any generation. Results are written once to docs/results/<family>.{md,json}; a

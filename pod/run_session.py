@@ -1,4 +1,4 @@
-"""The confirmatory GPU session (plan Phase 5). Run ON THE POD from a checkout of tag pap-v1.1:
+"""The confirmatory GPU session (plan Phase 5). Run ON THE POD from a checkout of tag pap-v1.2:
 
     uv run python pod/run_session.py            # resumable; safe to rerun after a crash
 

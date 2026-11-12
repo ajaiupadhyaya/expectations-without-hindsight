@@ -292,7 +292,17 @@ def generate(
     R = n_draws + (1 if greedy else 0)
     draws = np.arange(n_draws)
     dev = model.device
-    tabs = None if tables is None else [torch.as_tensor(t, device=dev) for t in tables]
+    tabs = None
+    if tables is not None:
+        # Deviation 2: the embedding has more rows (50,304) than the tokenizer has ids (50,257);
+        # sampling uses the full softmax as the authors' code does, and a padding id carries no
+        # text (ChronoBackend._text drops it) and no stop flag.
+        tabs = []
+        for t in tables:
+            t = torch.as_tensor(t, device=dev)
+            if t.shape[0] < model.V:
+                t = torch.cat([t, torch.zeros(model.V - t.shape[0], dtype=t.dtype, device=dev)])
+            tabs.append(t)
     out = torch.zeros((B, R, max_new_tokens), dtype=torch.long)
     started = torch.zeros((B, R), dtype=torch.bool, device=dev)
     done = torch.zeros((B, R), dtype=torch.bool, device=dev)

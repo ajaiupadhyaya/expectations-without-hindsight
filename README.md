@@ -10,7 +10,7 @@ error-on-revision regression (noise), or a weak model simply echoes the last num
 of the three, using vintage models with dated training cutoffs, repeated draws with a
 split-sample instrumental-variables estimator, and a pre-registered competence gate.
 
-**Status:** Pre-registered 2026-11-12 (tag `pap-v1`; session binds to `pap-v1.1` after pre-data Deviation 1; plan in `docs/PAP.md`). Phases 0–4 done. Next: the GPU session (Phase 5).
+**Status:** Pre-registered 2026-11-12 (tag `pap-v1`; session binds to `pap-v1.2` after pre-data Deviations 1–2; plan in `docs/PAP.md`). Phases 0–4 done. Next: the GPU session (Phase 5).
 
 | Document | What it is |
 |---|---|

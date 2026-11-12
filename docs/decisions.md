@@ -224,3 +224,13 @@ Proposals only; AJ decides in Phase 4. Evidence in `docs/power.md`.
 ## Decision 15: PAP signed (2026-11-12)
 - **AJ accepted all recommendations A1–A17 in `docs/PAP.md`** ("Accept all", 2026-11-12). The plan
   is frozen at the annotated tag `pap-v1`. Later changes go to `docs/deviations.md`.
+
+## Decision 16: GPU session choices (AJ, 2026-11-12)
+- **Repository public** at the tag (A16): github.com/ajaiupadhyaya/expectations-without-hindsight,
+  `pap-v1` and `pap-v1.1` pushed before any confirmatory generation.
+- **Llama-3.2 ladder models dropped** (A15): no HF token is supplied, so the session records them as
+  `skipped` (Deviation 1). The ladder is the five Qwen2.5 models.
+- **GPU:** one A100 SXM 80GB, Secure Cloud, $1.79/h (live catalog 2026-11-12), chosen over a 4090
+  because Qwen2.5-14B needs more than 24 GB. Pod `wknwaqrygxqk91`, US-MD-1, image
+  `runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404`, created 2026-11-12T03:56:04Z; session started
+  04:02 UTC from `pap-v1.1`; attempt 1 crashed (Deviation 2), pod stopped at 04:10 UTC.

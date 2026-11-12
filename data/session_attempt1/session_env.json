@@ -1,0 +1,8 @@
+{
+  "gpu": "NVIDIA A100-SXM4-80GB",
+  "cuda": "13.2",
+  "torch": "2.15.0+cu132",
+  "python": "3.12.3",
+  "head": "076b60978cbd85c51182bd8f973477918cba9e30",
+  "started": "2026-11-12T04:04:29Z"
+}

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Run ON THE POD inside tmux, from /workspace/ewh (a checkout of tag pap-v1.1 including .git).
+# Run ON THE POD inside tmux, from /workspace/ewh (a checkout of tag pap-v1.2 including .git).
 # Outputs land on the pod's /workspace volume so they survive a stop.
 set -uo pipefail
 cd /workspace/ewh
