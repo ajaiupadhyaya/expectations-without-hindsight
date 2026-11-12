@@ -1,6 +1,6 @@
 """Size and power simulations for Arm A (plan Task 3.7, D8, D13).
 
-DGP (estimator space, no prompts): M models x 5 rho cells (0.2..1) x 12 templates (6 paraphrases
+DGP (estimator space, no prompts): M models x 5 rho cells (0.2..1) x 24 templates (12 paraphrases
 x 2 formats) x n paths per (model, template, rho), nested. The noise-free coefficient of a unit is
 b = theta + eta_paraphrase, eta ~ N(0, tau^2): template is a random factor (handoff 3.3), so the
 estimand is the average over the population of templates. Each unit is a planted forecaster
@@ -10,7 +10,7 @@ variance would explode at rho = 1, where levels drift apart).
 
 Template-inference candidates (plan D8):
   (a) cluster by path (conditional on the 12 templates used);
-  (b) per-paraphrase pooled estimates, t-test across the 6 paraphrases (5 df);
+  (b) per-paraphrase pooled estimates, t-test across the N_PAR paraphrases (N_PAR - 1 df);
   (c) wild score bootstrap clustered by paraphrase (Webb six-point weights).
 """
 
@@ -27,7 +27,7 @@ from ewh.estimators.types import CovSpec, Draws
 from ewh.sim import ar1, planted
 
 RHOS = (0.2, 0.4, 0.6, 0.8, 1.0)
-N_PAR, N_FMT = 6, 2
+N_PAR, N_FMT = 12, 2  # paraphrases x formats (templates v2: 24 templates)
 WEBB = np.array([-math.sqrt(1.5), -1.0, -math.sqrt(0.5), math.sqrt(0.5), 1.0, math.sqrt(1.5)])
 
 

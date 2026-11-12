@@ -4,7 +4,8 @@
 #
 # Placeholders: {values} the formatted history; {target_desc} what to forecast (filled per format
 # and framing below); {series}, {first}, {last}, {target_q} for the named framing (Arm B only).
-version: 1
+version: 2  # v2 (2026-11-12): P7-P12 added at AJ's request before the freeze; level-series
+            # descriptions use parentheses for units so no sentence breaks (Decision 12)
 
 # The answer stem appended after the model's response header ("prefill"), per format.
 formats:
@@ -51,6 +52,31 @@ paraphrases:
     intro_named: "These are the historical quarterly values of {series}, from {first} (earliest) to {last} (latest)."
     question: "Estimate {target_desc}. Your answer should be a single number."
 
+  P7:
+    intro_anonymous: "The numbers below were observed one after another, at equal time intervals."
+    intro_named: "Below is the record of {series}, one value per quarter, from {first} to {last}."
+    question: "Give your best prediction of {target_desc}. Answer with a number only."
+  P8:
+    intro_anonymous: "Here are past observations of a single variable, in chronological order."
+    intro_named: "Here are past quarterly observations of {series}, in chronological order from {first} to {last}."
+    question: "What number do you predict for {target_desc}? Respond with just that number."
+  P9:
+    intro_anonymous: "This is a list of measurements taken at regular intervals, earliest first."
+    intro_named: "This is a list of quarterly measurements of {series}, earliest first, covering {first} to {last}."
+    question: "Forecast {target_desc}. Output a single number."
+  P10:
+    intro_anonymous: "Study the following series of values, ordered from oldest to newest."
+    intro_named: "Study the following quarterly series of {series}, ordered from oldest ({first}) to newest ({last})."
+    question: "What is your estimate of {target_desc}? Write only the number."
+  P11:
+    intro_anonymous: "The sequence below records how a quantity has evolved over time."
+    intro_named: "The sequence below records how {series} has evolved each quarter from {first} to {last}."
+    question: "Make a forecast of {target_desc}. Reply with one number and no other text."
+  P12:
+    intro_anonymous: "Below are the most recent values of a time series, listed from first to last."
+    intro_named: "Below are the quarterly values of {series} from {first} to {last}, listed from first to last."
+    question: "What do you think {target_desc} will be? Answer with a single number."
+
 # Arm B named framing: series descriptions.
 series:
   NGDP: "the percent change in U.S. nominal GDP from four quarters earlier"
@@ -64,9 +90,9 @@ series:
   HOUSING: "the percent change in U.S. housing starts from four quarters earlier"
   CPI: "the percent change in the U.S. consumer price index from four quarters earlier"
   INDPROD: "the percent change in the U.S. industrial production index from four quarters earlier"
-  UNEMP: "the U.S. civilian unemployment rate, in percent"
-  TB3M: "the 3-month U.S. Treasury bill rate, in percent"
-  TN10Y: "the 10-year U.S. Treasury bond yield, in percent"
+  UNEMP: "the U.S. civilian unemployment rate (percent)"
+  TB3M: "the 3-month U.S. Treasury bill rate (percent)"
+  TN10Y: "the 10-year U.S. Treasury bond yield (percent)"
 
 # ChronoGPT-Instruct wrapper, copied exactly from extract_response() in
 # vendor/chronogpt/ChronoGPT_instruct.py (the two indented lines carry four leading spaces).

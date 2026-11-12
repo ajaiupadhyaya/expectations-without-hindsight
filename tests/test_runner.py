@@ -10,7 +10,7 @@ from ewh.prompts import tables as tb
 
 @pytest.fixture
 def table():
-    return tb.build_arm_a("dryrun", ["m"], 3, rhos=(0.6,))  # 12 templates x 3 paths x 2 dates
+    return tb.build_arm_a("dryrun", ["m"], 3, rhos=(0.6,))  # 24 templates x 3 paths x 2 dates
 
 
 CFG = GenerationConfig(k=4, temperature=1.0, max_new_tokens=12, master_seed=7, shard_size=20)
@@ -39,7 +39,7 @@ def test_resume_after_crash_equals_uninterrupted(tmp_path, table):
 def test_completed_shards_are_never_regenerated(tmp_path, table):
     be = PlantedBackend(table, theta=0.0, noise_sd=1.0)
     led = Ledger(tmp_path / "l.jsonl")
-    assert run_shards(be, table, tmp_path, CFG, led) == 4
+    assert run_shards(be, table, tmp_path, CFG, led) == -(-len(table) // CFG.shard_size)
     assert run_shards(be, table, tmp_path, CFG, led) == 0
 
 

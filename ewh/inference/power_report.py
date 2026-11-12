@@ -21,7 +21,7 @@ KAPPAS = (0.5, 1.0, 2.0, 3.0)
 KS = (8, 16)
 TAUS = (0.0, 0.025, 0.05, 0.1)
 BASE_PATHS = 40  # per model x template x rho in the variance runs
-UNITS_PER_MODEL_PER_PATH = 12 * 5  # templates x pooled rho cells
+UNITS_PER_MODEL_PER_PATH = 2 * pw.N_PAR * 5  # templates x pooled rho cells
 
 
 def variance_constants(reps: int = 30) -> list[dict]:
@@ -57,7 +57,7 @@ def pooling_rows(reps: int = 30) -> list[dict]:
     return rows
 
 
-def mde_b(c: float, units: int, tau: float, n_par: int = 6) -> float:
+def mde_b(c: float, units: int, tau: float, n_par: int = pw.N_PAR) -> float:
     return pw.mde(np.sqrt(tau**2 / n_par + c / units), df=n_par - 1)
 
 
@@ -90,8 +90,8 @@ def main(argv):
         "tau = s.d. of the noise-free coefficient across "
         "paraphrases (template as a random factor).",
         "",
-        "| tau | (a) cluster by path | (b) paraphrase t-test (5 df) | (c) wild bootstrap by "
-        "paraphrase |",
+        f"| tau | (a) cluster by path | (b) paraphrase t-test ({pw.N_PAR - 1} df) "
+        "| (c) wild bootstrap by paraphrase |",
         "|---|---|---|---|",
     ]
     for tau, r in size.items():
@@ -107,7 +107,8 @@ def main(argv):
         "## Sampling variance per unit",
         "",
         "c = Var(pooled estimate) x units, from 30 replications of one model with 40 paths per "
-        "template x rho (2,400 units over the five pooled rho cells), tau = 0.",
+        f"template x rho ({BASE_PATHS * UNITS_PER_MODEL_PER_PATH:,} units over the five pooled rho "
+        "cells), tau = 0.",
         "",
         "| true b | kappa (noise s.d. / innovation s.d.) | K | c (split IV) | c (H1 gap) "
         "| mean IV | mean one-draw |",
@@ -130,7 +131,8 @@ def main(argv):
         "",
         "## Pooling across persistence cells and the number of draws",
         "",
-        "One model, 40 paths per template x rho (2,400 units over five cells), 30 replications. "
+        f"One model, 40 paths per template x rho ({BASE_PATHS * UNITS_PER_MODEL_PER_PATH:,} units "
+        "over five cells), 30 replications. "
         "rsd = robust s.d. (1.4826 x MAD) of the pooled split IV, because the ratio's variance "
         "need not exist when a cell's instrument is weak. weak = share of replications whose "
         "weakest pooled cell has first-stage t^2 < 10.",
@@ -160,8 +162,11 @@ def main(argv):
         "",
         "## MDE of the pooled corrected coefficient (H2), primary pooling",
         "",
-        "Method (b) across paraphrases: MDE = (t5,0.975 + t5,0.80) x sqrt(tau^2/6 + rsd1^2/M), "
-        "rsd1 = per-model robust s.d. at 2,400 units (40 paths per template x rho) for equal "
+        f"Method (b) across the {pw.N_PAR} paraphrases: "
+        f"MDE = (t,0.975 + t,0.80; {pw.N_PAR - 1} df) x "
+        f"sqrt(tau^2/{pw.N_PAR} + rsd1^2/M), "
+        "rsd1 = per-model robust s.d. at "
+        f"{BASE_PATHS * UNITS_PER_MODEL_PER_PATH:,} units (40 paths per template x rho) for equal "
         "weights over rho 0.4-1, K = 32, worst case over true b in the grid.",
         "",
         "| kappa | models M | paths per cell | " + " | ".join(f"tau = {t}" for t in TAUS) + " |",
@@ -172,19 +177,21 @@ def main(argv):
         for M in (6, 26):
             for paths in (40, 80, 160):
                 s2 = r1**2 * BASE_PATHS / paths / M
-                mdes = [f"{pw.mde(np.sqrt(t**2 / 6 + s2), df=5):.3f}" for t in TAUS]
+                mdes = [
+                    f"{pw.mde(np.sqrt(t**2 / pw.N_PAR + s2), df=pw.N_PAR - 1):.3f}" for t in TAUS
+                ]
                 L.append(f"| {ka:.1f} | {M} | {paths} | " + " | ".join(mdes) + " |")
-    floor = {t: pw.mde(t / np.sqrt(6), df=5) for t in TAUS}
+    floor = {t: pw.mde(t / np.sqrt(pw.N_PAR), df=pw.N_PAR - 1) for t in TAUS}
     L += [
         "",
         "Floor from paraphrase heterogeneity alone: "
         + ", ".join(f"tau {t}: {v:.3f}" for t, v in floor.items())
         + ".",
         "",
-        "**Reading.** With six paraphrases the MDE target of 0.05 (plan D13) is met only if tau "
-        "is about 0.025 or less, whatever the number of paths; at tau = 0.05 the floor is about "
-        "0.07. More paths shrink only the sampling term. tau is calibrated from the CPU pilot "
-        "(docs/pilot_log.md).",
+        f"**Reading.** With {pw.N_PAR} paraphrases the floor from paraphrase heterogeneity is "
+        f"{floor[0.025]:.3f} at tau = 0.025, {floor[0.05]:.3f} at tau = 0.05 and {floor[0.1]:.3f} "
+        "at tau = 0.1; more paths shrink only the sampling term. The CPU pilot could not "
+        "estimate tau (docs/pilot_log.md, Pilot 1).",
         "",
     ]
     OUT.write_text("\n".join(L))

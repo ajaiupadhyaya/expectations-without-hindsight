@@ -15,7 +15,7 @@ from pathlib import Path
 import yaml
 
 TEMPLATES_PATH = Path(__file__).resolve().parents[2] / "prompts" / "templates.yaml"
-PARAPHRASES = ("P1", "P2", "P3", "P4", "P5", "P6")
+PARAPHRASES = tuple(f"P{i}" for i in range(1, 13))
 FORMATS = ("comma", "indexed")
 
 

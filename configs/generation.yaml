@@ -1,6 +1,6 @@
 # Generation config, bound to tag pap-v1 (plan D17).
 status: 'DRAFT until tag pap-v1: allocation fields are fixed after the GPU pilot (Task 3.8)'
-templates_sha256: 44d2e514d6971e2560242e27eeb5cf7faecba7494cec459a55be752c3bb38204
+templates_sha256: 1628ef20e2ea2b4800a7c9bbb7ba8d0916d49072a151dcd327724a40827736eb
 vendored_chronogpt_instruct_sha256: 60af30736d94f8db2be3da7cea5ca045430d33b8aaf384fe953a496380bdb462
 sampling:
   temperature: 1.0

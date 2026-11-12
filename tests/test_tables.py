@@ -20,7 +20,7 @@ def test_templates_hash_is_recorded():
 
     cfg = yaml.safe_load((REPO_ROOT / "configs" / "generation.yaml").read_text())
     assert cfg["templates_sha256"] == templates_sha256()
-    assert len(ALL_TEMPLATES) == 12
+    assert len(ALL_TEMPLATES) == 24
 
 
 def test_chronogpt_wrapper_matches_vendored_code():

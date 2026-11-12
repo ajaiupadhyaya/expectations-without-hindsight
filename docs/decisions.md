@@ -183,3 +183,20 @@ Proposals only; AJ decides in Phase 4. Evidence in `docs/power.md`.
 - **Proposed preflight for every instruct vintage in the session (for the PAP):** on 50 pilot-
   table prompts, teacher-forced top-1 agreement at least 95% of steps with authors' margin above
   0.1, and prompt-pass max KL below 0.1; a vintage that fails is not generated and is reported.
+
+## Decision 12: Twelve paraphrases (templates v2) — AJ's decision (2026-11-12)
+- **Decision (AJ, 2026-11-12):** double the paraphrases from 6 to 12 before the freeze, giving
+  24 templates (12 paraphrases x 2 number formats) in both arms. P1–P6 are unchanged; P7–P12 were
+  added. Level-series descriptions now give units in parentheses ("(percent)") so no named
+  sentence breaks; this edits only the Arm B named framing of UNEMP, TB3M and TN10Y.
+- **Reason:** with template as a random factor, the Arm A MDE floor from paraphrase
+  heterogeneity falls from 1.43·tau to 0.89·tau (t-test across paraphrases, 11 df instead of 5);
+  at tau = 0.05 the floor is 0.044 instead of 0.071 (`docs/power.md`). Compute is not binding.
+- **Disclosure for the PAP:** templates v1 (sha 44d2e514…) were committed before any ChronoGPT
+  output. Before v2, the only ChronoGPT-family output was pilot 2 on the non-instruct base model
+  with v1 templates, from which only sampler-equivalence, parse-rate and throughput statistics
+  were computed (no forecast or gate statistic), plus pilot 1 on Qwen2-0.5B (v1 templates, rho 0.5,
+  pilot seeds). No outcome informed the new wording. Templates v2 sha256 is recorded in
+  `configs/generation.yaml`.
+- **Consequences:** Arm B has 137,088 prompts per full run (was 68,544); Arm A doubles per path;
+  the size check with 12 paraphrases still shows the paraphrase t-test holding its size.
