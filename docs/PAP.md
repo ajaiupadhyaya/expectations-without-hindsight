@@ -1,7 +1,8 @@
 # Pre-analysis plan: Expectations Without Hindsight
 
-**Status: DRAFT for AJ's sign-off. Not frozen.** On sign-off the repository is tagged `pap-v1`
-(annotated); from then on every bound file is fixed and every change is a logged deviation.
+**Status: SIGNED by AJ on 2026-11-12 ("Accept all": decisions A1–A17 as recommended). Frozen at
+the annotated tag `pap-v1`.** From the tag on, every bound file is fixed and every change is a
+logged deviation (`docs/deviations.md`).
 
 Author: Ajai Upadhyaya. Drafted with Claude (Anthropic), 2026-11-12.
 Spec: `docs/HANDOFF.md`. Execution plan: `docs/PLAN.md`. Decision log: `docs/decisions.md`.
@@ -10,10 +11,9 @@ Spec: `docs/HANDOFF.md`. Execution plan: `docs/PLAN.md`. Decision log: `docs/dec
 
 ## Decisions for AJ
 
-Each item has a recommendation (the draft below assumes it) and the alternative. Mark each
-"accept" or name the alternative; I then edit the plan and nothing else.
+AJ accepted every recommendation on 2026-11-12. The alternatives are kept for the record.
 
-| # | Decision | Recommendation (assumed below) | Alternative |
+| # | Decision | Adopted (AJ, 2026-11-12) | Alternative (not adopted) |
 |---|---|---|---|
 | A1 | What "bias" means in Arm A (H2) | Contrast with the least-squares (LS) learner on the same paths (H2-LS) is confirmatory; H2 against zero is reported beside it. Reason: the LS learner, which fits an AR(1) to the 40 values shown, has b ≈ −0.28 at rho = 0.2 and ≈ +0.10 at rho = 1 (Decision 4), so b against zero mislabels learning as bias. | H2 against zero confirmatory |
 | A2 | H1 direction | Two-sided. Noise pulls the one-draw coefficient toward about −1/2 from either side (`docs/noise_derivation.md`), so it can make a strong overreactor look milder. | One-sided (naive more negative) |

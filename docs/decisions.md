@@ -220,3 +220,7 @@ Proposals only; AJ decides in Phase 4. Evidence in `docs/power.md`.
   every stream keyed by a string tag. No confirmatory prompt had been generated. The pilots and the
   Phase 1-3 test fixtures used the old streams; the pilots are logged with the tables they used and
   no pilot statistic depends on which paths were drawn.
+
+## Decision 15: PAP signed (2026-11-12)
+- **AJ accepted all recommendations A1–A17 in `docs/PAP.md`** ("Accept all", 2026-11-12). The plan
+  is frozen at the annotated tag `pap-v1`. Later changes go to `docs/deviations.md`.

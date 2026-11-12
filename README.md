@@ -10,7 +10,7 @@ error-on-revision regression (noise), or a weak model simply echoes the last num
 of the three, using vintage models with dated training cutoffs, repeated draws with a
 split-sample instrumental-variables estimator, and a pre-registered competence gate.
 
-**Status:** Phases 0–2 done (2026-11-11). Phase 2: real-time SPF/RTDSM pipeline reproduces BGMS Table 3 and the CG coefficient (`docs/spf_replication.md`). Next: Phase 3 (prompts, ChronoGPT sampler, CPU dry run, power, GPU pilot). Not yet pre-registered.
+**Status:** Pre-registered 2026-11-12 (tag `pap-v1`; plan in `docs/PAP.md`). Phases 0–4 done. Next: the GPU session (Phase 5).
 
 | Document | What it is |
 |---|---|

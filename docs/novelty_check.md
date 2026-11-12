@@ -107,3 +107,8 @@ Predictions Do Not Imply Matched Belief Updating in Language Models", arXiv:2611
 (2026-11-05) — belief persistence in a Bernoulli task, no forecast-revision regression or noise
 correction; Fu, Deng, Hong and Wang, "Timing is Everything", arXiv:2611.05781 (2026-11-04) —
 temporal membership inference, context for leakage. To be re-run once more at the tag.
+
+## Re-run at the tag (2026-11-12)
+`uv run python scripts/novelty_openalex.py 2026-11-08`: 81 hits, all titles read. None concerns
+forecast revisions, expectation bias, vintage or point-in-time language models, or noise
+correction; no overlap with C1–C4. The verdict above stands at `pap-v1`.
