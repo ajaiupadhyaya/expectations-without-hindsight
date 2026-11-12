@@ -217,6 +217,7 @@ def build_arm_b(variables=None, framings=("named", "anonymous"), templates=ALL_T
                                 target=target,
                                 x_last=float(hist.iloc[-1]),
                                 last_obs=str(hist.index[-1]),
+                                hist=",".join(f"{v:.1f}" for v in hist.to_numpy()),
                             )
                         )
     return pd.DataFrame(rows)
