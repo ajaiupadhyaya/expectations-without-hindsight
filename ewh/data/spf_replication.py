@@ -148,13 +148,20 @@ def write(ref: dict, mine: dict, cg: dict) -> bool:
             dict(
                 variable=v,
                 headline=v in HEADLINE,
-                cons_ref=ref[v]["cons_b"], cons_ours=mine[v]["cons_b"],
-                cons_ours_se=mine[v]["cons_se"], cons_pub2019=pub[0],
-                ind_ref=ref[v]["ind_b"], ind_ours=mine[v]["ind_b"],
-                ind_ours_se=mine[v]["ind_se"], ind_pub2019=pub[1],
-                T_ref=ref[v]["T"], T_ours=mine[v]["T"], N_ref=ref[v]["N"], N_ours=mine[v]["N"],
+                cons_ref=ref[v]["cons_b"],
+                cons_ours=mine[v]["cons_b"],
+                cons_ours_se=mine[v]["cons_se"],
+                cons_pub2019=pub[0],
+                ind_ref=ref[v]["ind_b"],
+                ind_ours=mine[v]["ind_b"],
+                ind_ours_se=mine[v]["ind_se"],
+                ind_pub2019=pub[1],
+                T_ref=ref[v]["T"],
+                T_ours=mine[v]["T"],
+                N_ref=ref[v]["N"],
+                N_ours=mine[v]["N"],
             )
-        )  # fmt: skip
+        )
     df = pd.DataFrame(rows)
     CSV.parent.mkdir(parents=True, exist_ok=True)
     df.to_csv(CSV, index=False, float_format="%.6f")

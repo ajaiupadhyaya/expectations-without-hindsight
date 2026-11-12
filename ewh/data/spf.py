@@ -18,10 +18,21 @@ from ewh.data.philfed import SNAPSHOT
 from ewh.provenance.archive import RAW_ROOT
 
 SHEET = {
-    "NGDP": "NGDP", "RGDP": "RGDP", "PGDP": "PGDP", "CPI": "CPI", "INDPROD": "INDPROD",
-    "RCONSUM": "RCONSUM", "RNRESIN": "RNRESIN", "RRESINV": "RRESINV", "RGF": "RFEDGOV",
-    "RGSL": "RSLGOV", "HOUSING": "HOUSING", "UNEMP": "UNEMP", "TB3M": "TBILL", "TN10Y": "TBOND",
-}  # fmt: skip
+    "NGDP": "NGDP",
+    "RGDP": "RGDP",
+    "PGDP": "PGDP",
+    "CPI": "CPI",
+    "INDPROD": "INDPROD",
+    "RCONSUM": "RCONSUM",
+    "RNRESIN": "RNRESIN",
+    "RRESINV": "RRESINV",
+    "RGF": "RFEDGOV",
+    "RGSL": "RSLGOV",
+    "HOUSING": "HOUSING",
+    "UNEMP": "UNEMP",
+    "TB3M": "TBILL",
+    "TN10Y": "TBOND",
+}
 TRIM_IQR = 5.0
 MIN_PAIRS = 10
 

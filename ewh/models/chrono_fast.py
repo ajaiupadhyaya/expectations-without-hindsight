@@ -81,12 +81,16 @@ class FastChrono:
             b = f"blocks.{i}."
             self.blocks.append(
                 dict(
-                    q=w(b + "attn.c_q.weight"), k=w(b + "attn.c_k.weight"),
-                    v=w(b + "attn.c_v.weight"), o=w(b + "attn.c_proj.weight"),
-                    attn_l=p(b + "attn.lambdas"), fc=w(b + "mlp.c_fc.weight"),
-                    proj=w(b + "mlp.c_proj.weight"), blk_l=p(b + "lambdas"),
+                    q=w(b + "attn.c_q.weight"),
+                    k=w(b + "attn.c_k.weight"),
+                    v=w(b + "attn.c_v.weight"),
+                    o=w(b + "attn.c_proj.weight"),
+                    attn_l=p(b + "attn.lambdas"),
+                    fc=w(b + "mlp.c_fc.weight"),
+                    proj=w(b + "mlp.c_proj.weight"),
+                    blk_l=p(b + "lambdas"),
                 )
-            )  # fmt: skip
+            )
         self.skip = p("skip_weights")
         self.lm_head = w("lm_head.weight")
         L = self.L
@@ -204,10 +208,12 @@ class FastChrono:
     def new_gen_cache(self, B, R, G):
         shape = (B, R, G, self.H, self.Dh)
         return [
-            (torch.zeros(shape, dtype=self.dtype, device=self.device),
-             torch.zeros(shape, dtype=self.dtype, device=self.device))
+            (
+                torch.zeros(shape, dtype=self.dtype, device=self.device),
+                torch.zeros(shape, dtype=self.dtype, device=self.device),
+            )
             for _ in range(self.L)
-        ]  # fmt: skip
+        ]
 
 
 # ---------------------------------------------------------------- generation
