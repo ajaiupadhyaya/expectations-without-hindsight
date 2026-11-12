@@ -1,4 +1,4 @@
-"""The confirmatory GPU session (plan Phase 5). Run ON THE POD from a checkout of tag pap-v1:
+"""The confirmatory GPU session (plan Phase 5). Run ON THE POD from a checkout of tag pap-v1.1:
 
     uv run python pod/run_session.py            # resumable; safe to rerun after a crash
 
@@ -240,6 +240,11 @@ def main() -> int:
             run_ladder(m)
         except Exception as e:  # descriptive only; a gated or failing ladder model is skipped
             log(f"{m}: ladder model skipped ({type(e).__name__}: {e})")
+            # Deviation 1: the skip is recorded so the confirm runner leaves the model out
+            Ledger(GEN / "ledger.jsonl").append(
+                event="skipped", model=m, reason=f"{type(e).__name__}: {str(e)[:300]}"
+            )
+            torch.cuda.empty_cache()
     binding.build_generation_manifest(GEN)
     (GEN / "DONE").write_text(time.strftime("%Y-%m-%dT%H:%M:%SZ\n", time.gmtime()))
     log("SESSION DONE")

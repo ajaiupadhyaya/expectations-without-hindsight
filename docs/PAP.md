@@ -1,7 +1,8 @@
 # Pre-analysis plan: Expectations Without Hindsight
 
 **Status: SIGNED by AJ on 2026-11-12 ("Accept all": decisions A1–A17 as recommended). Frozen at
-the annotated tag `pap-v1`.** From the tag on, every bound file is fixed and every change is a
+the annotated tag `pap-v1`; the session binds to `pap-v1.1` after Deviation 1, made before any
+data existed (`docs/deviations.md`).** From the tag on, every bound file is fixed and every change is a
 logged deviation (`docs/deviations.md`).
 
 Author: Ajai Upadhyaya. Drafted with Claude (Anthropic), 2026-11-12.
@@ -76,7 +77,7 @@ AJ accepted every recommendation on 2026-11-12. The alternatives are kept for th
 
 ### 0.3 Protocols
 - **P1 Binding.** The session and every confirm script refuse to run unless HEAD descends from the
-  annotated tag `pap-v1` and every file under `ewh/`, `vendor/`, `prompts/`, `configs/`, `pod/`,
+  annotated tag `pap-v1.1` (Deviation 1, made before any data; `pap-v1` is the signed plan) and every file under `ewh/`, `vendor/`, `prompts/`, `configs/`, `pod/`,
   `pyproject.toml` and `uv.lock` is byte-identical to its blob at the tag with nothing modified or
   untracked (`ewh/confirm/binding.py`).
 - **P2 One session.** One GPU session generates all raw draws (`pod/run_session.py`): six priority

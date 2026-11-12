@@ -16,7 +16,7 @@ from ewh.models.ledger import Ledger
 from ewh.provenance import manifest
 from ewh.provenance.archive import REPO_ROOT, sha256_file
 
-TAG = "pap-v1"
+TAG = "pap-v1.1"  # Deviation 1 (2026-11-12); pap-v1 is kept
 BOUND = ("ewh", "vendor", "prompts", "configs", "pod", "pyproject.toml", "uv.lock")
 RESULTS = REPO_ROOT / "docs" / "results"
 GEN_ROOT = REPO_ROOT / "data" / "generations"

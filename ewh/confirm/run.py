@@ -5,7 +5,7 @@
     python -m ewh.confirm.run arm_b    # H4, H5 (Holm family), secondaries, robustness rows
     python -m ewh.confirm.run dry-generate | gate --dry-run | arm_a --dry-run | arm_b --dry-run
 
-A real run refuses unless the tag binding holds (annotated `pap-v1`, bound files unchanged), the
+A real run refuses unless the tag binding holds (annotated `pap-v1.1`, bound files unchanged), the
 raw archive verifies, the generation ledger is intact and every pre-registered shard (and nothing
 else) is present and matches the manifest. It then writes docs/results/<family>.attempt and only
 after that reads any generation. Results are written once to docs/results/<family>.{md,json}; a
@@ -32,6 +32,7 @@ from ewh.capability import gate as G
 from ewh.confirm import binding
 from ewh.data import pairs
 from ewh.inference.multiple import holm, holm_adjusted
+from ewh.models.ledger import Ledger
 from ewh.models.runner import read_draws
 from ewh.provenance.archive import RAW_ROOT, REPO_ROOT
 
@@ -51,10 +52,39 @@ def runs_present(root: Path) -> list[str]:
     return sorted(p.name for p in root.iterdir() if p.is_dir() and any(p.glob("shard_*.parquet")))
 
 
+def excluded_runs(root: Path, spec: session.Spec) -> dict[str, str]:
+    """Deviation 1: models the session recorded as not generated, and their ledger event.
+
+    A ChronoGPT vintage that failed the preflight ('preflight_failed') or a ladder model that the
+    session skipped ('skipped') is left out of the expected shard set and of every family, unless
+    all of its shards were later completed. A preflight failure counts as failing the gate.
+    """
+    path = root / "ledger.jsonl"
+    if not path.exists():
+        return {}
+    ledger = Ledger(path)
+    events = {
+        e["model"]: e["event"]
+        for e in ledger.entries()
+        if e.get("event") in ("preflight_failed", "skipped") and "model" in e
+    }
+    return {
+        m: ev
+        for m, ev in events.items()
+        if len(ledger.completed(m)) != session.n_shards(session.model_table(m, spec))
+    }
+
+
 # ---------------------------------------------------------------- gate
 def gate_family(root: Path, spec: session.Spec) -> dict:
     out = {}
-    for model in [m for m in session.CHRONO + session.LADDER if (root / m).exists()]:
+    excluded = excluded_runs(root, spec)
+    for m, ev in excluded.items():
+        if m in session.CHRONO and ev == "preflight_failed":
+            out[m] = {"pass": False, "preflight_failed": True}
+    for model in [
+        m for m in session.CHRONO + session.LADDER if (root / m).exists() and m not in excluded
+    ]:
         t = session.model_table(model, spec)
         gt = t[t.block == "gate"].reset_index(drop=True)
         d = draws_for(root, model)
@@ -291,8 +321,10 @@ def main(argv: list[str]) -> int:
     if not dry:
         binding.check_binding()
         gate_session = json.loads((root / "gate_session.json").read_text())
+        excluded = excluded_runs(root, spec)
         expected = session.expected_shards(
-            session.CHRONO + session.LADDER, gate_session.get("substitutions", {})
+            [m for m in session.CHRONO + session.LADDER if m not in excluded],
+            gate_session.get("substitutions", {}),
         )
         binding.check_inputs(expected, root, RAW_ROOT)
         if family != "gate" and not (RESULTS / "gate.json").exists():
