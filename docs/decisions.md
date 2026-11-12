@@ -154,3 +154,24 @@ consensus, CG's sample 1969Q1–2014Q4) lies in [1.0, 1.5].
 - **Choice:** the real-time AR benchmark (plan D12, used for RMSE comparisons and the power
   check) fits an AR(4) with intercept to the 40 shown values; if the fit is not stationary it
   falls back to an AR(1) with coefficient capped at 0.99. Fixed before any model output.
+
+## Decision 10: Proposals for the PAP from the Phase 3 power work (2026-11-11)
+Proposals only; AJ decides in Phase 4. Evidence in `docs/power.md`.
+- **Template inference (plan D8):** per-paraphrase estimates and a t-test across the six
+  paraphrases (5 df) as primary. It is the only candidate that holds its size when the true
+  coefficient varies across wordings; clustering by path over-rejects (6–9%) and the wild
+  bootstrap over-rejects with no heterogeneity (5–8%).
+- **Pooled Arm A estimand (plan change 3, refined):** equal weights over rho in {0.4, 0.6, 0.8,
+  1} as primary; fixed weights proportional to rho^2 over {0.2, …, 1} as robustness; rho = 0
+  and 0.2 per cell with Fieller sets. Reason: for near-rational or underreacting forecasters the
+  rho = 0.2 cell's instrument is weak once per-draw noise is about one innovation s.d. or more,
+  and equal weights over {0.2, …, 1} inherit it.
+- **K = 32 draws** per prompt (plus one greedy read): clearly better than 16 at high noise.
+- **Arm B pooled inference (plan D12):** block-t over 8 time blocks (7 df) as primary;
+  Driscoll–Kraay over-rejects (13%) even with fixed-b critical values on 97 overlapping quarters.
+- **H4 MDE** is at least 0.33 pre-2000 s.d. units, so the pre-registered "uninformative below
+  the MDE" wording will apply to any non-rejection.
+- **MDE target 0.05 (plan D13)** is attainable only if the across-paraphrase s.d. of the true
+  coefficient (tau) is about 0.025 or less. Options for AJ: accept a larger MDE, or add
+  paraphrases before the freeze (doubling to 12 paraphrases lowers the tau floor by about 30%);
+  no ChronoGPT output exists yet, so adding templates now is still allowed.
