@@ -173,5 +173,5 @@ Proposals only; AJ decides in Phase 4. Evidence in `docs/power.md`.
   the MDE" wording will apply to any non-rejection.
 - **MDE target 0.05 (plan D13)** is attainable only if the across-paraphrase s.d. of the true
   coefficient (tau) is about 0.025 or less. Options for AJ: accept a larger MDE, or add
-  paraphrases before the freeze (doubling to 12 paraphrases lowers the tau floor by about 30%);
+  paraphrases before the freeze (doubling to 12 paraphrases lowers the tau floor from 1.43 tau to 0.89 tau, about 38%);
   no ChronoGPT output exists yet, so adding templates now is still allowed.
