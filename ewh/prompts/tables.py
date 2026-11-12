@@ -174,6 +174,8 @@ def build_arm_b(variables=None, framings=("named", "anonymous"), templates=ALL_T
             except ValueError:
                 continue  # stale vintage (OQ2)
             target = rt.outcome(var, t)
+            if not np.isfinite(target):
+                continue  # outcome never published in the snapshot (e.g. UNEMP 2025Q4)
             for framing in framings:
                 for tpl in templates:
                     uid = f"armB|{var}|{t}|{framing}|{tpl.name}"

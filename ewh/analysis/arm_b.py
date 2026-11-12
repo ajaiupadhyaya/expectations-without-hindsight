@@ -130,7 +130,10 @@ def pooled_b(d: Draws, estimator=eor.split_iv) -> float:
 
 
 def t_test(values: np.ndarray) -> dict:
+    """t-test across groups; groups with a non-finite estimate are counted and reported, not
+    silently dropped (n_nonfinite)."""
     v = np.asarray(values, float)
+    n_bad = int((~np.isfinite(v)).sum())
     v = v[np.isfinite(v)]
     n = len(v)
     se = v.std(ddof=1) / math.sqrt(n)
@@ -143,6 +146,7 @@ def t_test(values: np.ndarray) -> dict:
         p=float(2 * stats.t.sf(abs(t), n - 1)),
         df=n - 1,
         n_groups=n,
+        n_nonfinite=n_bad,
     )
 
 

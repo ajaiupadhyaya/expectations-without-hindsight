@@ -182,3 +182,39 @@ class PlantedBackend:
             draws = f + self.noise_sd * norm.ppf(np.clip(u, 1e-12, 1 - 1e-12))
             texts.append([f" {f:.0f}"] + [f" {d:.3f}" for d in draws])
         return SampleBatch(texts, [0] * len(prompt_ids))
+
+
+class DryRunBackend:
+    """Synthetic forecaster for the dry run of the whole session and the confirm scripts: planted
+    Arm A units (known coefficient theta) and the least-squares learner elsewhere (gate and Arm B
+    rows), all with noise. Never used on confirmatory seeds."""
+
+    def __init__(self, table, name: str, theta: float = -0.3, noise_sd: float = 10.0):
+        self.name, self.revision, self.noise_sd = name, f"dry-{name}", noise_sd
+        armA = table[table.block.isin(["main", "crossed"])]
+        self.planted = PlantedBackend(armA, theta, noise_sd) if len(armA) else None
+        from ewh.sim.benchmarks import ls_learner
+
+        hs = table["h"].fillna(1).astype(int) if "h" in table else [1] * len(table)
+        self.fallback = {
+            pid: float(ls_learner(np.array([[float(v) for v in h.split(",")]]), int(hh))[0])
+            for pid, h, hh in zip(table.prompt_id, table["hist"], hs, strict=True)
+        }
+
+    def sample(self, prompt_ids, prompts, k, master_seed, temperature, max_new_tokens):
+        from scipy.stats import norm
+
+        from ewh.models.chrono_fast import prompt_base, uniforms
+
+        texts = []
+        for pid in prompt_ids:
+            if self.planted is not None and pid in self.planted.sys:
+                f, sd = self.planted.sys[pid], self.noise_sd
+            else:
+                f, sd = self.fallback[pid], 0.3
+            u = uniforms(
+                np.array([prompt_base(master_seed, self.revision, pid)], np.uint64), np.arange(k), 0
+            )[0]
+            draws = f + sd * norm.ppf(np.clip(u, 1e-12, 1 - 1e-12))
+            texts.append([f" {f:.2f}"] + [f" {d:.3f}" for d in draws])
+        return SampleBatch(texts, [0] * len(prompt_ids))

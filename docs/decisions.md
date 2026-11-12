@@ -200,3 +200,23 @@ Proposals only; AJ decides in Phase 4. Evidence in `docs/power.md`.
   `configs/generation.yaml`.
 - **Consequences:** Arm B has 137,088 prompts per full run (was 68,544); Arm A doubles per path;
   the size check with 12 paraphrases still shows the paraphrase t-test holding its size.
+
+## Decision 13: Pairs with no published outcome get no prompts (2026-11-12)
+- **Finding (dry run of the confirm scripts):** UNEMP, t = 2025Q1 has no outcome: its target
+  quarter 2025Q4 lacks a quarterly average because the October 2025 unemployment rate was never
+  published (government shutdown). A NaN outcome made within-variable demeaning NaN for the whole
+  variable and the block t-test then dropped blocks silently.
+- **Rule:** `build_arm_b` skips any pair whose outcome is not published in the 2026-11-11 snapshot.
+  Block and paraphrase t-tests report the number of non-finite group estimates (`n_nonfinite`)
+  instead of dropping them silently. Fixed before any model output.
+
+## Decision 14: Seed-tag hashing bug fixed before any confirmatory generation (2026-11-12)
+- **Finding (dry run of the Arm A confirm script):** `ewh.sim.ar1._tag` turned a string tag into
+  an integer by keeping only its first 8 bytes, so tags such as "chrono-2000" and "chrono-2001"
+  (and "gate-hist-a" / "gate-hist-b") gave the same random stream. Arm A main-block paths were
+  therefore shared across vintages (2,304 distinct prompts instead of 29,952 in the dry run),
+  breaking the nested design (plan change 4).
+- **Fix:** tags are hashed in full with blake2b (64 bits). Regression tests added. This changes
+  every stream keyed by a string tag. No confirmatory prompt had been generated. The pilots and the
+  Phase 1-3 test fixtures used the old streams; the pilots are logged with the tables they used and
+  no pilot statistic depends on which paths were drawn.

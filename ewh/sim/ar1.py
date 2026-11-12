@@ -6,6 +6,7 @@ values, namespaces or purposes never share shocks (plan D2).
 
 from __future__ import annotations
 
+import hashlib
 from functools import cache
 from pathlib import Path
 
@@ -30,9 +31,12 @@ def stream(namespace: str | int, *tags: int | str) -> np.random.Generator:
 
 
 def _tag(t: int | str) -> int:
+    """Stable 63-bit key for a stream tag. Strings are hashed in full (blake2b); an earlier
+    version kept only the first 8 bytes, so "chrono-2000" and "chrono-2001" collided
+    (Decision 14)."""
     if isinstance(t, int):
         return t
-    return int.from_bytes(t.encode(), "little") % (2**63)
+    return int.from_bytes(hashlib.blake2b(t.encode(), digest_size=8).digest(), "little") >> 1
 
 
 def rho_tag(rho: float) -> int:

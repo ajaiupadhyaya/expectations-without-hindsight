@@ -113,3 +113,12 @@ def test_no_prompt_exceeds_chronogpt_context(arm_b):
             for t, p in zip(df.input_text, df.prefill, strict=True)
         )
         assert n < 1792 - 16
+
+
+def test_main_block_prompts_are_unique_across_models():
+    import pandas as pd
+
+    t = pd.concat(
+        [tb.build_arm_a("dryrun", [m], 2, rhos=(0.6,)) for m in ("chrono-2000", "chrono-2001")]
+    )
+    assert t.prompt_id.is_unique

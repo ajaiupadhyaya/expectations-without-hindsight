@@ -1,0 +1,312 @@
+{
+  "models": {
+    "chrono-1999": {
+      "prompts_00000.parquet": {
+        "bytes": 58450,
+        "sha256": "08aa74f15a4371e743e3b44ecb71aa0fa7581b44a0e0c6827f626941bf70d4e9"
+      },
+      "prompts_00001.parquet": {
+        "bytes": 58463,
+        "sha256": "f9527564306ef416bcb4bf904f7f5a45e6badd7a450eee17f31c24f953077a0e"
+      },
+      "prompts_00002.parquet": {
+        "bytes": 34317,
+        "sha256": "b8d082ced8609af473e4fdb91598568d1886d51a47ef5d920751687721f6f0a7"
+      },
+      "shard_00000.parquet": {
+        "bytes": 778142,
+        "sha256": "adb397b141c880247a6a2685fc572951481e3bed521ea607e49775ddc9ec6a3f"
+      },
+      "shard_00001.parquet": {
+        "bytes": 350221,
+        "sha256": "dd26ebfeae4ecece7817afc1fd84469bb1cc1349ab98b54f6f082a908cfeddf2"
+      },
+      "shard_00002.parquet": {
+        "bytes": 240382,
+        "sha256": "1e370d69b0a8170398f5e4d68920be7b5cb855d05990d4ed45aa95c90819e838"
+      }
+    },
+    "chrono-2000": {
+      "prompts_00000.parquet": {
+        "bytes": 42602,
+        "sha256": "79fbc23da965ab09be1d5634fe3cac552869b8dca21f239f7e74eafd893eb6d1"
+      },
+      "shard_00000.parquet": {
+        "bytes": 566718,
+        "sha256": "0bf39355fcee5419514ea14579ee204d74c9f0413f41efa7a9b633ce6ad09d45"
+      }
+    },
+    "chrono-2001": {
+      "prompts_00000.parquet": {
+        "bytes": 42560,
+        "sha256": "a2217ee39428132da6684d1d4d787b3a8f2eaedd05cf5dbe2232696675aea673"
+      },
+      "shard_00000.parquet": {
+        "bytes": 566575,
+        "sha256": "2bedaf4f342af5360ce1171939d87139c5448e2eec7de50f76f729cbdfff7f52"
+      }
+    },
+    "chrono-2002": {
+      "prompts_00000.parquet": {
+        "bytes": 42575,
+        "sha256": "28693f358da29fb2979821446eb279dc70c98937cf4b387a041a139f5585f2ce"
+      },
+      "shard_00000.parquet": {
+        "bytes": 570196,
+        "sha256": "da6f950306fdd1108afb02b22e87a404c0848a0c195f78256d85451dfc20cd16"
+      }
+    },
+    "chrono-2003": {
+      "prompts_00000.parquet": {
+        "bytes": 42542,
+        "sha256": "bec3c2330c678d840f724be3ea9634d2baa7eb117088a6b941acc23cba27c99a"
+      },
+      "shard_00000.parquet": {
+        "bytes": 569763,
+        "sha256": "8b9ef3bb0a4439f3906272121b577cb232378b20ee3b763f3e3294707c176f46"
+      }
+    },
+    "chrono-2004": {
+      "prompts_00000.parquet": {
+        "bytes": 55672,
+        "sha256": "ddab001afff5fba9b02521a44995848f812fc031d49f489f3a90d01de5fba0e3"
+      },
+      "shard_00000.parquet": {
+        "bytes": 676513,
+        "sha256": "a869670a3f455b24b9c529f0a0e1f5d452975015cf7494e24835fc09b4832be1"
+      }
+    },
+    "chrono-2005": {
+      "prompts_00000.parquet": {
+        "bytes": 42516,
+        "sha256": "a7211801531c8c95f402568876411ef637a95421812dca82f09ac9535fc0d927"
+      },
+      "shard_00000.parquet": {
+        "bytes": 566706,
+        "sha256": "bfd5fec329fcba5255c4e4b4269eb7cf42bf427fd0b57528d26197cdfe108954"
+      }
+    },
+    "chrono-2006": {
+      "prompts_00000.parquet": {
+        "bytes": 42540,
+        "sha256": "b03e39ca64cb6439f9cffcd4937868d5c13961964b2561a3b739a8d97648bde8"
+      },
+      "shard_00000.parquet": {
+        "bytes": 566952,
+        "sha256": "6ceec4bdd25b49d2cea4be052e2cc8f8d8c7197f934b673341302569bcd2a5f3"
+      }
+    },
+    "chrono-2007": {
+      "prompts_00000.parquet": {
+        "bytes": 42545,
+        "sha256": "8f0891add76b024bef7f428ab466d6a54eaedde9c0cd404633d449141a673129"
+      },
+      "shard_00000.parquet": {
+        "bytes": 572768,
+        "sha256": "09c4ee228522e9624f6bef8d6cdaf54d22a7b6888927b8712f41b463648a2a3d"
+      }
+    },
+    "chrono-2008": {
+      "prompts_00000.parquet": {
+        "bytes": 42522,
+        "sha256": "f96c53c831432a8206c8fd58ba01a96097b27f906ee20de4cbb8e2263479416b"
+      },
+      "shard_00000.parquet": {
+        "bytes": 578475,
+        "sha256": "9b301913262ad5ac2fd1024d34fda1915ea103b3d3e7e364a17afcfcd2c5bbc8"
+      }
+    },
+    "chrono-2009": {
+      "prompts_00000.parquet": {
+        "bytes": 58491,
+        "sha256": "cdae47a5c4fe89e32fd93f2387c58d0ce66e0e168457390f0d15952afdc4c986"
+      },
+      "prompts_00001.parquet": {
+        "bytes": 58348,
+        "sha256": "5dc70f1276db8c93501e74174fd2110a527b75510fd4c72cbfbeb0fdba349bd9"
+      },
+      "prompts_00002.parquet": {
+        "bytes": 19151,
+        "sha256": "5d760290ca280fd8d2f0d2878dbbd45e8ecb73fc61e49e7df6d63a3595b620f6"
+      },
+      "shard_00000.parquet": {
+        "bytes": 690750,
+        "sha256": "e244bc349e4f2091d7e6b16a04b7c57c10ca5c3e6acc22c8314d07e8cb36d9e4"
+      },
+      "shard_00001.parquet": {
+        "bytes": 387681,
+        "sha256": "4fc1fc663b59c770a30e58f8f46e9ed033d788cc1c5c5fa8a2388dbe9259ee13"
+      },
+      "shard_00002.parquet": {
+        "bytes": 110651,
+        "sha256": "7ab1e07be9933044c367e9d9125e9d2fd13d71c959ae9eee931173e4b937dc63"
+      }
+    },
+    "chrono-2010": {
+      "prompts_00000.parquet": {
+        "bytes": 42492,
+        "sha256": "40638bec5f6e816ed671b448d7f53ad82bba05c9417817f52375914fcfefa4cb"
+      },
+      "shard_00000.parquet": {
+        "bytes": 573329,
+        "sha256": "0df212b136f72a0830f78ac323b6eb2ec08498bf822cf4536ba4d36c50d291c6"
+      }
+    },
+    "chrono-2011": {
+      "prompts_00000.parquet": {
+        "bytes": 42607,
+        "sha256": "acf28357caee0a7a75164b7b34f2895f654b7c04584f21de3c686926a643b546"
+      },
+      "shard_00000.parquet": {
+        "bytes": 572545,
+        "sha256": "1a0cdbdd5c0d8b8da111dfa2d68dc401bed59d6dc935bdae58c56c6e8153cc06"
+      }
+    },
+    "chrono-2012": {
+      "prompts_00000.parquet": {
+        "bytes": 42535,
+        "sha256": "b53627bde77b6ba253dfa3a5143828d5334d30da008de603728f5ce2e2096a20"
+      },
+      "shard_00000.parquet": {
+        "bytes": 570101,
+        "sha256": "e99ea07a7155a55bb41a7ae40ab24dc5daa0fb723e6836424b6b1034c66c277c"
+      }
+    },
+    "chrono-2013": {
+      "prompts_00000.parquet": {
+        "bytes": 42587,
+        "sha256": "dacf4ca3d5d029fcbaf8bf0a8b1a7fd84b7f848ae044175b3cee8e244016069c"
+      },
+      "shard_00000.parquet": {
+        "bytes": 573189,
+        "sha256": "494bc33d1c8bd743d0d6f77c8abfb50bcf6f0f1ac7b480e53b36924136853311"
+      }
+    },
+    "chrono-2014": {
+      "prompts_00000.parquet": {
+        "bytes": 55706,
+        "sha256": "3a6799f7707b3ffd577ec4fa26b03100d68de784dc227e005b55d22679d546fb"
+      },
+      "shard_00000.parquet": {
+        "bytes": 664994,
+        "sha256": "c3179d9561805f54b26ed8a53701a9aebafde29eee95f2515aa8aa0a5d14b117"
+      }
+    },
+    "chrono-2015": {
+      "prompts_00000.parquet": {
+        "bytes": 42560,
+        "sha256": "02061b9751cdba1d9c7ddf4e521eab9898da184cbd4396c78cc5ecd28003433f"
+      },
+      "shard_00000.parquet": {
+        "bytes": 571610,
+        "sha256": "b51917b46ccef49bda0d158a968ca1994521c61bb6571e2d91b0f002a27d3f2a"
+      }
+    },
+    "chrono-2016": {
+      "prompts_00000.parquet": {
+        "bytes": 42492,
+        "sha256": "513f27118330e38b6238b22aee59bc71e28b3b939103d326898e6c897a7230a0"
+      },
+      "shard_00000.parquet": {
+        "bytes": 566299,
+        "sha256": "c0d923b959822617feae8bdaa4e1f47cf18cc4e10b9ec0d8c2b35282f61916df"
+      }
+    },
+    "chrono-2017": {
+      "prompts_00000.parquet": {
+        "bytes": 42561,
+        "sha256": "87862e32de57994d5237100c1764adb176ae6fa15bcf9f4df077b7ab44fba781"
+      },
+      "shard_00000.parquet": {
+        "bytes": 569946,
+        "sha256": "204c4a95bd3fb6dae3dde990163c93f7fa2e4657bf01beeb696c6116f3a25584"
+      }
+    },
+    "chrono-2018": {
+      "prompts_00000.parquet": {
+        "bytes": 42576,
+        "sha256": "9c261d11e2861e30edce396a1a5cde3e3009bbe682bae78af4029896c19baccc"
+      },
+      "shard_00000.parquet": {
+        "bytes": 567118,
+        "sha256": "b31690b0bf14b10911a840c10cc49d611c01175768c427637ce6f5020c95a46d"
+      }
+    },
+    "chrono-2019": {
+      "prompts_00000.parquet": {
+        "bytes": 55292,
+        "sha256": "845f0fdecb86c51ec57997e8e2e4fc1e5c6716927990329445ef5bed641af689"
+      },
+      "shard_00000.parquet": {
+        "bytes": 670943,
+        "sha256": "1c4216a4942b1f453acad5b9255c9a91882a8064780df6dd5e1dd9be60d831b6"
+      }
+    },
+    "chrono-2020": {
+      "prompts_00000.parquet": {
+        "bytes": 42567,
+        "sha256": "f85c87f2ba28d75e7d5623227977883dffd17742e71c0c17e95c7b5ce9f0b1a1"
+      },
+      "shard_00000.parquet": {
+        "bytes": 568294,
+        "sha256": "17ce7c60fbb03bbf6d84030cd457ffcf76856516f11dbe5e3f674dd4c7558782"
+      }
+    },
+    "chrono-2021": {
+      "prompts_00000.parquet": {
+        "bytes": 42571,
+        "sha256": "6da292857f48880b9fb4a37c2cbc124bb435ed6cd3f34abaf485b60421b04533"
+      },
+      "shard_00000.parquet": {
+        "bytes": 570584,
+        "sha256": "875f5ec52f1c8971d23244a1bb14026218f95194900fc8a872eaf7f9f1ca323d"
+      }
+    },
+    "chrono-2022": {
+      "prompts_00000.parquet": {
+        "bytes": 42606,
+        "sha256": "2de2d5b9539c6d843353ccee9c5e4c1908920e0b1d13c73dc29b54ca3fa047a1"
+      },
+      "shard_00000.parquet": {
+        "bytes": 568411,
+        "sha256": "158e4484524b4a5f2466f8a223ba66a80be7c756a136cef086ac5f9786074070"
+      }
+    },
+    "chrono-2023": {
+      "prompts_00000.parquet": {
+        "bytes": 42135,
+        "sha256": "dc83058bfacf3732ac923f8a162e30b59a1f86951133742756934ad1944f53a1"
+      },
+      "shard_00000.parquet": {
+        "bytes": 568459,
+        "sha256": "d3a8c3dda78ebbd725b0034a21555c2f2c45089c42b3348c845589a9989a46e2"
+      }
+    },
+    "chrono-2024": {
+      "prompts_00000.parquet": {
+        "bytes": 58435,
+        "sha256": "7bf708eca82d87279ed8526679717420ab4ac82755972ffc74157daa71c64847"
+      },
+      "prompts_00001.parquet": {
+        "bytes": 58463,
+        "sha256": "a027075b9ce7cd825480474029084cdef4a375872ca2409e82df77874fa864a6"
+      },
+      "prompts_00002.parquet": {
+        "bytes": 34314,
+        "sha256": "bd6442c769da4c2d2221ca730706f605c6556f5ae59827715f2b6007a266b5fd"
+      },
+      "shard_00000.parquet": {
+        "bytes": 777325,
+        "sha256": "e8bdc0ab4f432a70ca20b514d4c6cf17c7ef3986f2ff9e080fa8d840ee8caf44"
+      },
+      "shard_00001.parquet": {
+        "bytes": 350170,
+        "sha256": "bccdc54e6c17ab15cad834e68afb4f697c7259bb8ca11afe0628cac2de716466"
+      },
+      "shard_00002.parquet": {
+        "bytes": 243119,
+        "sha256": "3633864681ed32ce57cdba124c2dd36c1d09e8a4f7442ebd547a129c85c4604a"
+      }
+    }
+  }
+}

@@ -34,6 +34,7 @@ def build_draws(table: pd.DataFrame, draws: pd.DataFrame, k: int, greedy: bool =
     """One Draws row per unit. Sampled draws (draw >= 0) are kept if valid under plan D6; with
     greedy=True the single greedy read (draw = -1) is used instead."""
     d = draws[draws.draw == -1] if greedy else draws[draws.draw >= 0]
+    d = d[d.prompt_id.isin(set(table.prompt_id))]  # draws of other blocks are not this table's
     hist = {
         pid: np.array([float(v) for v in h.split(",")])
         for pid, h in zip(table.prompt_id, table["hist"], strict=True)

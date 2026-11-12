@@ -64,3 +64,13 @@ def test_simple_benchmarks():
     hist = np.array([[1.0, 3.0, 8.0]])
     assert benchmarks.random_walk(hist, 2)[0] == 8.0
     assert benchmarks.uncond_mean(hist, 1)[0] == 4.0
+
+
+def test_string_tags_are_hashed_in_full():
+    """Regression (Decision 14): tags sharing their first 8 bytes must give different streams."""
+    a = ar1.ar1_paths(0.6, 3, 10, "tests", "chrono-2000")
+    b = ar1.ar1_paths(0.6, 3, 10, "tests", "chrono-2001")
+    c = ar1.ar1_paths(0.6, 3, 10, "tests", "gate-hist-a")
+    d = ar1.ar1_paths(0.6, 3, 10, "tests", "gate-hist-b")
+    assert not np.array_equal(a, b) and not np.array_equal(c, d)
+    assert ar1._tag("chrono-2000") != ar1._tag("chrono-2001")
